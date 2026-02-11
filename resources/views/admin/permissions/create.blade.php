@@ -2,14 +2,14 @@
 
 @section('content')
 
-<div class="max-w-2xl mx-auto mt-8">
+<div class="max-w-2xl mx-auto mt-10 bg-[#f5f3ff] p-6 rounded-3xl">
 
     <!-- Card -->
-    <div class="bg-[#fff1f3] border border-[#f1dadd] rounded-3xl shadow-lg p-8">
+    <div class="bg-white border border-[#e9e5ff] rounded-3xl shadow-lg p-8">
 
         <!-- Heading -->
-        <h2 class="text-2xl font-bold text-[#9f1239] mb-6">
-            ✨ Create Permission
+        <h2 class="text-2xl font-bold text-[#8b5cf6] mb-6">
+            💜 Create Permission
         </h2>
 
         <form method="POST" action="{{ route('admin.permissions.store') }}">
@@ -22,9 +22,13 @@
                 </label>
 
                 <input name="name"
-                       class="w-full px-4 py-3 rounded-xl border border-[#f1dadd] 
-                              focus:outline-none focus:ring-2 focus:ring-[#9f1239] 
-                              bg-white placeholder-gray-400"
+                       class="w-full px-4 py-3 rounded-xl 
+                              border border-[#e9e5ff] 
+                              focus:outline-none 
+                              focus:ring-2 focus:ring-[#8b5cf6] 
+                              focus:border-[#8b5cf6]
+                              bg-[#f9f8ff] placeholder-gray-400 
+                              transition"
                        placeholder="e.g. user.create"
                        required>
             </div>
@@ -33,15 +37,18 @@
             <div class="flex items-center gap-4">
 
                 <button type="submit"
-                        class="bg-[#9f1239] hover:bg-[#881337] 
+                        class="bg-[#8b5cf6] hover:bg-[#7c3aed] 
                                text-white px-6 py-3 rounded-xl 
                                transition duration-200 shadow-md">
                     💾 Save
                 </button>
 
                 <a href="{{ route('admin.permissions.index') }}"
-                   class="px-6 py-3 rounded-xl border border-[#f1dadd] 
-                          text-[#2f2f33] hover:bg-[#fde2e6] transition">
+                   class="px-6 py-3 rounded-xl 
+                          border border-[#e9e5ff] 
+                          text-[#2f2f33] 
+                          hover:bg-[#ede9fe] 
+                          transition">
                     Cancel
                 </a>
 

@@ -2,75 +2,124 @@
 
 @section('content')
 
-<div class="flex justify-between mb-4">
-    <h2 class="text-xl font-bold">Users</h2>
+<div class="max-w-7xl mx-auto mt-10">
 
-    @can('user.create')
-    <a href="{{ route('admin.users.create') }}"
-    class="btn btn-outline-secondary text-black px-4 py-2 rounded">
-        Add User
-    </a>
-    @endcan
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold text-[#8b5cf6] flex items-center gap-2">
+            👥 Users
+        </h2>
 
-</div>
+        @can('user.create')
+        <a href="{{ route('admin.users.create') }}"
+           class="bg-[#9f7aea] hover:bg-[#7c3aed] 
+                  text-white px-5 py-2.5 
+                  rounded-xl shadow-md 
+                  transition flex items-center gap-2">
+            ➕ Add User
+        </a>
+        @endcan
+    </div>
 
-<div class="bg-white p-4 rounded shadow">
-<table class="datatable w-full">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Roles</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
+    <!-- Card -->
+    <div class="bg-[#f8f7ff] border border-[#e9e7ff] 
+                rounded-3xl shadow-xl p-6">
 
-    <tbody>
-        @foreach($users as $user)
-        <tr>
-            <td>{{ $user->id }}</td>
-            <td>{{ $user->name }}</td>
-            <td>{{ $user->email }}</td>
-            <td>
-                @foreach($user->roles as $role)
-                    <span class="bg-blue-500 text-dark px-2 py-1 rounded text-xs">
-                        {{ $role->name }}
-                    </span>
+        <table class="datatable w-full text-left">
+            <thead>
+                <tr class="text-[#8b5cf6] border-b border-[#e9e7ff]">
+                    <th class="py-3">#</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Roles</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody class="text-gray-700">
+
+                @foreach($users as $user)
+                <tr class="border-b border-[#e9e7ff] 
+                           hover:bg-[#ede9fe] transition">
+
+                    <td class="py-3 font-medium">
+                        #{{ $user->id }}
+                    </td>
+
+                    <td class="font-semibold">
+                        {{ $user->name }}
+                    </td>
+
+                    <td>
+                        {{ $user->email }}
+                    </td>
+
+                    <td>
+                        @foreach($user->roles as $role)
+                            <span class="bg-white border border-[#e9e7ff] 
+                                         px-3 py-1 rounded-full 
+                                         text-xs font-medium 
+                                         mr-1">
+                                {{ $role->name }}
+                            </span>
+                        @endforeach
+                    </td>
+
+                    <!-- Actions -->
+                    <td class="text-center space-x-2">
+
+                        @can('user.view')
+                        <a href="{{ route('admin.users.show',$user) }}"
+                           class="inline-flex items-center justify-center
+                                  w-9 h-9 rounded-full
+                                  bg-white border border-[#e9e7ff]
+                                  hover:bg-[#ede9fe]
+                                  shadow-sm transition"
+                           title="View">
+                            👁
+                        </a>
+                        @endcan
+
+                        @can('user.edit')
+                        <a href="{{ route('admin.users.edit',$user) }}"
+                           class="inline-flex items-center justify-center
+                                  w-9 h-9 rounded-full
+                                  bg-white border border-[#e9e7ff]
+                                  hover:bg-[#ede9fe]
+                                  shadow-sm transition"
+                           title="Edit">
+                            ✏️
+                        </a>
+                        @endcan
+
+                        @can('user.delete')
+                        <form method="POST"
+                              action="{{ route('admin.users.destroy',$user) }}"
+                              class="inline">
+                            @csrf @method('DELETE')
+                            <button type="submit"
+                                onclick="return confirm('Delete this user?')"
+                                class="inline-flex items-center justify-center
+                                       w-9 h-9 rounded-full
+                                       bg-white border border-[#e9e7ff]
+                                       hover:bg-[#ede9fe]
+                                       shadow-sm transition"
+                                title="Delete">
+                                🗑
+                            </button>
+                        </form>
+                        @endcan
+
+                    </td>
+
+                </tr>
                 @endforeach
-            </td>
-            <td class="space-x-1">
-                @can('user.view')
-                <a href="{{ route('admin.users.show',$user) }}"
-                   class="bg-blue-600 text-dark px-2 py-1 rounded">
-                   View
-                </a>
-                @endcan
 
-                @can('user.edit')
-                <a href="{{ route('admin.users.edit',$user) }}"
-                   class="bg-yellow-500 text-dark px-2 py-1 rounded">
-                   Edit
-                </a>
-                @endcan
+            </tbody>
+        </table>
 
-                @can('user.delete')
-                <form method="POST"
-                      action="{{ route('admin.users.destroy',$user) }}"
-                      class="inline">
-                    @csrf @method('DELETE')
-                    <button
-                      onclick="return confirm('Delete this user?')"
-                      class=" text-dark px-2 py-1 rounded">
-                      Delete
-                    </button>
-                </form>
-                @endcan
-            </td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
+    </div>
+
 </div>
 
 @endsection
