@@ -3,9 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Notifications\Notifiable;
 class Candidate extends Model
 {
+     use Notifiable;
     protected $fillable = [
         'full_name','father_name','dob','gender','marital_status',
         'mobile','email','nationality','passport_number','passport_expiry','kyc_status','aadhaar_no','pan_no','bank_name','account_no','ifsc'

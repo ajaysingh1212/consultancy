@@ -58,4 +58,9 @@ class CandidateDocument extends Model
             default => 'bg-yellow-100 text-yellow-700',
         };
     }
+    public function histories()
+    {
+        return $this->hasMany(DocumentVerificationHistory::class,'document_id');
+    }
+
 }

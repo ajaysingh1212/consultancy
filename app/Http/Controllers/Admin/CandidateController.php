@@ -126,4 +126,16 @@ class CandidateController extends Controller
             ->route('admin.candidates.documents', $candidate)
             ->with('success', 'Documents uploaded successfully');
     }
+    public function profile(Candidate $candidate)
+    {
+        $candidate->load([
+            'addresses',
+            'educations',
+            'documents.verifier',
+            'documents.histories'
+        ]);
+
+        return view('admin.candidates.show', compact('candidate'));
+    }
+
 }

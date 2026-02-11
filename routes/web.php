@@ -137,6 +137,11 @@ Route::group([
         [CandidateVerificationController::class, 'verifyEducation']
     )->name('candidate.education.verify')
      ->middleware('permission:candidate.verify');
+    /* ===== Candidate Master Profile ===== */
+    Route::get('candidates/{candidate}/profile',
+        [CandidateController::class,'profile'])
+        ->name('candidates.profile')
+        ->middleware('permission:candidate.view');
 });
 
 /*
