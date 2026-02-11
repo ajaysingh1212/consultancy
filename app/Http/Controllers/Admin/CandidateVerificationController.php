@@ -137,5 +137,93 @@ class CandidateVerificationController extends Controller
 
         return view('admin.candidates.history',compact('histories'));
     }
+    public function bulkApprove($type, Candidate $candidate)
+    {
+        if($type === 'address'){
+            $candidate->addresses()->update([
+                'verification_status'=>'verified',
+                'verified_by'=>auth()->id(),
+                'verified_at'=>now(),
+            ]);
+        }
+
+        if($type === 'education'){
+            $candidate->educations()->update([
+                'verification_status'=>'verified',
+                'verified_by'=>auth()->id(),
+                'verified_at'=>now(),
+            ]);
+        }
+
+        if($type === 'document'){
+            $candidate->documents()->update([
+                'verification_status'=>'verified',
+                'verified_by'=>auth()->id(),
+                'verified_at'=>now(),
+            ]);
+        }
+
+        $candidate->update(['kyc_status'=>'verified']);
+
+        return back()->with('success','All approved successfully');
+    }
+    public function updateAddressStatus(Request $request, CandidateAddress $address)
+    {
+
+        $request->validate([
+            'status' => 'required|in:verified,pending,rejected',
+            'remarks' => 'nullable|string'
+        ]);
+
+        $address->update([
+            'status' => $request->status,
+            'remarks' => $request->remarks,
+            'verified_by' => auth()->id(),
+            'verified_at' => now(),
+        ]);
+
+        return back()->with('success','Address updated successfully');
+    }
+    public function updateEducationStatus(Request $request, CandidateEducation $education)
+    {
+        $request->validate([
+            'status' => 'required|in:verified,pending,rejected',
+            'remarks' => 'nullable|string'
+        ]);
+
+        $education->update([
+            'verification_status' => $request->status,
+            'status' =>  $request->status,
+            'remarks' => $request->remarks,
+            'verified_by' => auth()->id(),
+            'verified_at' => now(),
+        ]);
+
+        return back()->with('success','Education updated successfully');
+    }
+    public function updateDocumentStatus(Request $request, CandidateDocument $document)
+    {
+        $request->validate([
+            'status' => 'required|in:verified,pending,rejected',
+            'remarks' => 'nullable|string'
+        ]);
+
+        $document->update([
+            'verification_status' => $request->status,
+            'remarks' => $request->remarks,
+            'verified_by' => auth()->id(),
+            'verified_at' => now(),
+        ]);
+
+        // Save History
+        DocumentVerificationHistory::create([
+            'document_id' => $document->id,
+            'verified_by' => auth()->id(),
+            'status' => $request->status,
+            'remarks' => $request->remarks,
+        ]);
+
+        return back()->with('success','Document updated successfully');
+    }
 
 }

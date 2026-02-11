@@ -156,9 +156,30 @@ Route::group([
         [CandidateVerificationController::class,'verifyDocuments'])
         ->name('candidates.verify.documents')
         ->middleware('role:admin|super-admin');
-        
+
     Route::get('history/{type}/{id}',
     [CandidateVerificationController::class,'history']);
+
+    Route::post('bulk-approve/{type}/{candidate}',
+    [CandidateVerificationController::class,'bulkApprove'])
+    ->name('bulk.approve');
+    Route::post(
+    'address/{address}/update-status',
+    [CandidateVerificationController::class,'updateAddressStatus']
+    )->name('address.update.status')
+    ->middleware('role:admin|Super Admin');
+
+    Route::post(
+        'education/{education}/update-status',
+        [CandidateVerificationController::class,'updateEducationStatus']
+    )->name('education.update.status')
+    ->middleware('role:admin|Super Admin');
+
+    Route::post(
+        'document/{document}/update-status',
+        [CandidateVerificationController::class,'updateDocumentStatus']
+    )->name('document.update.status')
+    ->middleware('role:admin|Super Admin');
 
 });
 

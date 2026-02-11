@@ -170,11 +170,22 @@
     </div>
 </div>
 
-
 <script>
 function openModal(type,id){
+
     let form = document.getElementById('updateForm');
-    form.action = `/admin/${type}/${id}/update-status`;
+
+    if(type === 'address'){
+        form.action = `/admin/address/${id}/update-status`;
+    }
+
+    if(type === 'education'){
+        form.action = `/admin/education/${id}/update-status`;
+    }
+
+    if(type === 'document'){
+        form.action = `/admin/document/${id}/update-status`;
+    }
 
     document.getElementById('updateModal').classList.remove('hidden');
     document.getElementById('updateModal').classList.add('flex');
