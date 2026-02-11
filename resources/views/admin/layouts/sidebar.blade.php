@@ -11,6 +11,24 @@
         str_contains($route, 'candidate-kyc') ||
         str_contains($route, 'candidate-documents') ||
         str_contains($route, 'candidate-verification');
+
+    $route = request()->route()->getName();
+
+    $userMgmtActive =
+        str_contains($route, 'users') ||
+        str_contains($route, 'roles') ||
+        str_contains($route, 'permissions');
+
+    $candidateActive =
+        str_contains($route, 'candidates') ||
+        str_contains($route, 'candidate-kyc') ||
+        str_contains($route, 'candidate-documents') ||
+        str_contains($route, 'candidate-verification');
+
+    $walletActive =
+        str_contains($route, 'wallets');
+
+
 @endphp
 
 <div class="w-64 min-h-screen bg-[#faf7f8] border-r border-[#f1dadd]">
@@ -125,6 +143,47 @@
                            ? 'bg-[#9f1239] text-white'
                     : 'text-[#2f2f33] hover:bg-[#fde2e6]' }}">
                         ✅ Verification Status
+                    </a>
+
+                </div>
+            </div>
+        </li>
+        @endcanany
+        @canany(['wallet.view','wallet.manage'])
+        <li>
+            <button onclick="toggleMenu('walletMgmt')"
+                class="w-full flex items-center justify-between px-4 py-2 rounded-xl transition
+                {{ $walletActive
+                    ? 'bg-[#9f1239] text-white'
+                    : 'text-[#2f2f33] hover:bg-[#fde2e6]' }}">
+                <span class="flex items-center gap-3">💰 Wallet Management</span>
+                <span id="walletMgmtIcon">{{ $walletActive ? '▾' : '▸' }}</span>
+            </button>
+
+            <div id="walletMgmt" class="{{ $walletActive ? '' : 'hidden' }} mt-2 ml-2">
+                <div class="bg-[#fff1f3] rounded-2xl p-2 border border-[#f1dadd] space-y-1">
+                    <a href="{{ route('admin.wallets.index') }}"
+                    class="block px-4 py-2 rounded-lg transition
+                    {{ str_contains($route,'wallets')
+                            ? 'bg-white text-[#9f1239] font-medium'
+                            : 'text-[#2f2f33] hover:bg-[#fde2e6]' }}">
+                        💰 All Wallets
+                    </a>
+
+                    {{-- <a href="{{ route('admin.wallets.show') }}"
+                    class="block px-4 py-2 rounded-lg transition
+                    {{ str_contains($route,'candidates')
+                            ? 'bg-white text-[#9f1239] font-medium'
+                            : 'text-[#2f2f33] hover:bg-[#fde2e6]' }}">
+                        👤 Candidate Wallet
+                    </a> --}}
+
+                    <a href="#"
+                    class="block px-4 py-2 rounded-lg transition
+                    {{ str_contains($route,'wallet-report')
+                            ? 'bg-white text-[#9f1239] font-medium'
+                            : 'text-[#2f2f33] hover:bg-[#fde2e6]' }}">
+                        📊 Wallet Reports
                     </a>
 
                 </div>

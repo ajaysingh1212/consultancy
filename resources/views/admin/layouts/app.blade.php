@@ -42,6 +42,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 
 {{-- ✅ DATATABLE INITIALIZER (THIS WAS MISSING) --}}
+...
+{{-- ✅ DATATABLE INITIALIZER --}}
 <script>
 $(document).ready(function () {
     $('.datatable').DataTable({
@@ -51,6 +53,13 @@ $(document).ready(function () {
     });
 });
 </script>
+
+{{-- 🔥 IMPORTANT — ADD THIS --}}
+@stack('scripts')
+
+</body>
+</html>
+
 
 </body>
 </html>

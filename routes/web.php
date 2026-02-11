@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\CandidateController;
 use App\Http\Controllers\Admin\CandidateKycController;
 use App\Http\Controllers\Admin\CandidateVerificationController;
+use App\Http\Controllers\Admin\WalletController;
 
 /*
 |--------------------------------------------------------------------------
@@ -180,6 +181,26 @@ Route::group([
         [CandidateVerificationController::class,'updateDocumentStatus']
     )->name('document.update.status')
     ->middleware('role:admin|Super Admin');
+
+
+Route::prefix('wallets')->as('wallets.')->group(function () {
+
+    // All wallets
+    Route::get('/', [WalletController::class, 'index'])
+        ->name('index');
+
+    // Specific wallet
+    Route::get('/{candidate}', [WalletController::class, 'show'])
+        ->name('show');
+
+    Route::post('/{wallet}/transaction', [WalletController::class, 'transaction'])
+        ->name('transaction');
+        
+    Route::post('/wallets/{wallet}/transaction', [WalletController::class, 'transaction'])
+    ->name('wallets.transaction');
+
+});
+
 
 });
 
