@@ -2,17 +2,17 @@
 
 @section('content')
 
-<div class="max-w-6xl mx-auto mt-8">
+<div class="max-w-6xl mx-auto mt-8 bg-[#f5f3ff] p-6 rounded-3xl">
 
     <!-- Header -->
     <div class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-bold text-[#9f1239]">
-            🌸 Permissions
+        <h2 class="text-2xl font-bold text-[#8b5cf6]">
+            💜 Permissions
         </h2>
 
         @can('permission.create')
         <a href="{{ route('admin.permissions.create') }}"
-           class="bg-[#9f1239] hover:bg-[#881337] text-white 
+           class="bg-[#8b5cf6] hover:bg-[#a78bfa] text-white 
                   px-5 py-2 rounded-xl shadow-md transition duration-200">
             ➕ Add Permission
         </a>
@@ -20,11 +20,11 @@
     </div>
 
     <!-- Card -->
-    <div class="bg-[#fff1f3] border border-[#f1dadd] rounded-3xl shadow-lg p-6">
+    <div class="bg-white border border-[#e9e5ff] rounded-3xl shadow-lg p-6">
 
         <table class="w-full text-left">
             <thead>
-                <tr class="text-[#9f1239] border-b border-[#f1dadd]">
+                <tr class="text-[#8b5cf6] border-b border-[#e9e5ff]">
                     <th class="py-3">ID</th>
                     <th>Name</th>
                     <th>Guard</th>
@@ -35,7 +35,7 @@
             <tbody class="text-[#2f2f33]">
 
                 @foreach($permissions as $permission)
-                <tr class="border-b border-[#f1dadd] hover:bg-[#fde2e6] transition">
+                <tr class="border-b border-[#e9e5ff] hover:bg-[#ede9fe] transition">
 
                     <td class="py-3">{{ $permission->id }}</td>
                     <td class="font-medium">{{ $permission->name }}</td>
@@ -48,8 +48,8 @@
                         <a href="{{ route('admin.permissions.show',$permission) }}"
                            class="inline-flex items-center justify-center
                                   w-9 h-9 rounded-full
-                                  bg-white border border-[#f1dadd]
-                                  hover:bg-[#fde2e6] shadow-sm transition"
+                                  bg-white border border-[#e9e5ff]
+                                  hover:bg-[#ede9fe] shadow-sm transition"
                            title="View">
                             👁
                         </a>
@@ -60,8 +60,8 @@
                         <a href="{{ route('admin.permissions.edit',$permission) }}"
                            class="inline-flex items-center justify-center
                                   w-9 h-9 rounded-full
-                                  bg-white border border-[#f1dadd]
-                                  hover:bg-[#fde2e6] shadow-sm transition"
+                                  bg-white border border-[#e9e5ff]
+                                  hover:bg-[#ede9fe] shadow-sm transition"
                            title="Edit">
                             ✏️
                         </a>
@@ -76,8 +76,8 @@
                             <button type="submit"
                                 class="inline-flex items-center justify-center
                                        w-9 h-9 rounded-full
-                                       bg-white border border-[#f1dadd]
-                                       hover:bg-[#fde2e6] shadow-sm transition"
+                                       bg-white border border-[#e9e5ff]
+                                       hover:bg-[#ede9fe] shadow-sm transition"
                                 onclick="return confirm('Delete this permission?')"
                                 title="Delete">
                                 🗑
