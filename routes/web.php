@@ -142,6 +142,24 @@ Route::group([
         [CandidateController::class,'profile'])
         ->name('candidates.profile')
         ->middleware('permission:candidate.view');
+    Route::post('candidates/{candidate}/verify-address',
+    [CandidateVerificationController::class,'verifyAddress'])
+    ->name('candidates.verify.address')
+    ->middleware('role:admin|super-admin');
+
+    Route::post('candidates/{candidate}/verify-education',
+        [CandidateVerificationController::class,'verifyEducation'])
+        ->name('candidates.verify.education')
+        ->middleware('role:admin|super-admin');
+
+    Route::post('candidates/{candidate}/verify-documents',
+        [CandidateVerificationController::class,'verifyDocuments'])
+        ->name('candidates.verify.documents')
+        ->middleware('role:admin|super-admin');
+        
+    Route::get('history/{type}/{id}',
+    [CandidateVerificationController::class,'history']);
+
 });
 
 /*

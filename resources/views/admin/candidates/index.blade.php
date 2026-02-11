@@ -14,7 +14,7 @@
 </div>
 
 <div class="bg-white p-4 rounded shadow">
-    
+
 <table class="datatable w-full">
     <thead>
         <tr>
@@ -57,6 +57,10 @@
                 <a href="{{ route('admin.candidates.documents',$candidate) }}"
                 class="bg-indigo-600 px-2 py-1 rounded dark">
                     Documents
+                </a>
+                <a href="{{ route('admin.candidates.profile',$candidate) }}"
+                    class="bg-indigo-600 text-white px-2 py-1 rounded text-xs">
+                    Profile
                 </a>
 
                 {{-- Delete --}}
