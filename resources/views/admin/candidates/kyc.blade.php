@@ -2,20 +2,63 @@
 
 @section('content')
 
-<h2 class="text-2xl font-bold mb-6">
-    Candidate KYC – {{ $candidate->full_name }}
-</h2>
+<style>
+/* ===== Lavender + Ice White Theme ===== */
+.bg-lavender {
+    background: linear-gradient(135deg,#f6f3ff,#ffffff);
+}
 
-{{-- KYC PROGRESS --}}
-<div class="w-full bg-gray-200 rounded h-3">
-    <div class="bg-green-600 h-3 rounded"
-         style="width: {{ $candidate->kyc_completion }}%">
+.card-soft {
+    background:#ffffff;
+    border:1px solid #ece9ff;
+    border-radius:16px;
+    box-shadow:0 8px 25px rgba(140,120,255,0.08);
+}
+
+.lavender-text{ color:#6d5dfc; }
+
+.lavender-btn{
+    background:linear-gradient(90deg,#8f84ff,#6d5dfc);
+    color:#fff;
+    font-size:14px;
+    padding:6px 14px;
+    border-radius:8px;
+}
+
+.lavender-btn:hover{ opacity:.9; }
+
+.input-soft{
+    border:1px solid #ddd6fe;
+    border-radius:8px;
+    padding:6px 10px;
+    width:100%;
+    font-size:13px;
+}
+
+.input-soft:focus{
+    outline:none;
+    border-color:#8b5cf6;
+    box-shadow:0 0 0 2px rgba(139,92,246,0.15);
+}
+</style>
+
+<div class="bg-lavender p-6 rounded-2xl space-y-6">
+
+    <h2 class="text-xl font-bold lavender-text">
+        🪪 Candidate KYC – {{ $candidate->full_name }}
+    </h2>
+
+    {{-- KYC PROGRESS --}}
+    <div>
+        <div class="w-full bg-gray-200 rounded h-2">
+            <div class="bg-green-500 h-2 rounded"
+                 style="width: {{ $candidate->kyc_completion }}%">
+            </div>
+        </div>
+        <p class="text-md mt-1 text-gray-600">
+            KYC Completion: {{ $candidate->kyc_completion }}%
+        </p>
     </div>
-</div>
-
-<p class="text-sm mt-1">
-    KYC Completion: {{ $candidate->kyc_completion }}%
-</p>
 
 @php
     $presentAddress = $candidate->addresses->where('type','present')->first();
@@ -23,209 +66,202 @@
 
 <form method="POST"
       action="{{ route('admin.candidates.kyc.store',$candidate) }}"
-      class="space-y-8">
+      class="space-y-6">
 @csrf
 
-{{-- BASIC DETAILS --}}
-<div class="bg-white p-6 rounded-lg shadow">
-    <h3 class="font-semibold text-lg mb-4 border-b pb-2">
+
+{{-- ================= BASIC DETAILS ================= --}}
+<div class="card-soft p-3">
+    <h3 class="font-semibold lavender-text mb-3 text-md">
         👤 Basic Details
     </h3>
 
-    <div class="grid grid-cols-2 gap-4">
-        <input class="border p-2 rounded bg-gray-100"
+    <div class="grid md:grid-cols-3 gap-3 text-md">
+
+        <input class="input-soft bg-gray-100"
                value="{{ $candidate->full_name }}" disabled>
 
-        <input class="border p-2 rounded bg-gray-100"
+        <input class="input-soft bg-gray-100"
                value="{{ $candidate->mobile }}" disabled>
 
-        <input class="border p-2 rounded bg-gray-100"
+        <input class="input-soft bg-gray-100"
                value="{{ $candidate->passport_number }}" disabled>
 
-        <input class="border p-2 rounded bg-gray-100"
+        <input class="input-soft bg-gray-100"
                value="{{ $candidate->nationality }}" disabled>
+
         <input name="father_name"
-               class="border p-2 rounded"
+               class="input-soft"
                value="{{ $candidate->father_name ?? '' }}"
-               placeholder="Enter Father Name" required>
+               placeholder="Father Name"
+               required>
     </div>
 </div>
 
-{{-- ADDRESS --}}
-<div class="bg-white p-6 rounded-lg shadow">
-    <h3 class="font-semibold text-lg mb-4 border-b pb-2">
+
+{{-- ================= ADDRESS ================= --}}
+<div class="card-soft p-3">
+    <h3 class="font-semibold lavender-text mb-3 text-md">
         🏠 Address Details
     </h3>
 
-    <div class="grid grid-cols-2 gap-4">
+    <div class="grid md:grid-cols-4 gap-3 text-md">
+
         <input name="address"
-               class="border p-2 rounded"
+               class="input-soft md:col-span-2"
                value="{{ $presentAddress->address ?? '' }}"
                placeholder="Full Address">
 
         <input name="city"
-               class="border p-2 rounded"
+               class="input-soft"
                value="{{ $presentAddress->city ?? '' }}"
                placeholder="City">
 
         <input name="state"
-               class="border p-2 rounded"
+               class="input-soft"
                value="{{ $presentAddress->state ?? '' }}"
                placeholder="State">
 
         <input name="pincode"
-               class="border p-2 rounded"
+               class="input-soft"
                value="{{ $presentAddress->pincode ?? '' }}"
                placeholder="Pincode">
     </div>
 </div>
 
-{{-- IDENTITY --}}
-<div class="bg-white p-6 rounded-lg shadow">
-    <h3 class="font-semibold text-lg mb-4 border-b pb-2">
+
+{{-- ================= IDENTITY ================= --}}
+<div class="card-soft p-3">
+    <h3 class="font-semibold lavender-text mb-3 text-md">
         🪪 Identity Details
     </h3>
 
-    <div class="grid grid-cols-2 gap-4">
+    <div class="grid md:grid-cols-2 gap-3 text-md">
+
         <input name="aadhaar_no"
-               class="border p-2 rounded"
+               class="input-soft"
                value="{{ $candidate->aadhaar_no ?? '' }}"
                placeholder="Aadhaar Number">
 
         <input name="pan_no"
-               class="border p-2 rounded"
+               class="input-soft"
                value="{{ $candidate->pan_no ?? '' }}"
                placeholder="PAN Number">
     </div>
 </div>
 
-{{-- BANK --}}
-<div class="bg-white p-6 rounded-lg shadow">
-    <h3 class="font-semibold text-lg mb-4 border-b pb-2">
+
+{{-- ================= BANK ================= --}}
+<div class="card-soft p-3">
+    <h3 class="font-semibold lavender-text mb-3 text-md">
         🏦 Bank Details
     </h3>
 
-    <div class="grid grid-cols-2 gap-4">
+    <div class="grid md:grid-cols-3 gap-3 text-md">
+
         <input name="bank_name"
-               class="border p-2 rounded"
+               class="input-soft"
                value="{{ $candidate->bank_name ?? '' }}"
                placeholder="Bank Name">
 
         <input name="account_no"
-               class="border p-2 rounded"
+               class="input-soft"
                value="{{ $candidate->account_no ?? '' }}"
                placeholder="Account Number">
 
         <input name="ifsc"
-               class="border p-2 rounded"
+               class="input-soft"
                value="{{ $candidate->ifsc ?? '' }}"
                placeholder="IFSC Code">
-
     </div>
 </div>
 
-{{-- QUALIFICATION TABLE --}}
-<div class="bg-white p-6 rounded-lg shadow">
-    <div class="flex justify-between items-center mb-4">
-        <h3 class="font-semibold text-lg">
+
+{{-- ================= QUALIFICATION ================= --}}
+<div class="card-soft p-3">
+    <div class="flex justify-between items-center mb-3">
+        <h3 class="font-semibold lavender-text text-md">
             🎓 Qualification Details
         </h3>
 
         <button type="button"
                 onclick="addQualificationRow()"
-                class="bg-blue-600 text-white px-3 py-1 rounded text-sm">
-            ➕ Add Row
+                class="lavender-btn text-md">
+            ➕ Add
         </button>
     </div>
 
     <div class="overflow-x-auto">
-    <table class="w-full text-sm border">
-        <thead class="bg-gray-100">
+    <table class="w-full text-md border rounded">
+        <thead class="bg-purple-50">
             <tr>
-                <th class="border p-2">Level</th>
-                <th class="border p-2">Board / University</th>
-                <th class="border p-2">Roll No</th>
-                <th class="border p-2">Roll Code</th>
-                <th class="border p-2">Passing Year</th>
-                <th class="border p-2">Marks (%)</th>
+                <th class="p-2 border">Level</th>
+                <th class="p-2 border">Board</th>
+                <th class="p-2 border">Roll No</th>
+                <th class="p-2 border">Code</th>
+                <th class="p-2 border">Year</th>
+                <th class="p-2 border">Marks</th>
             </tr>
         </thead>
 
         <tbody id="qualificationTable">
 
-        {{-- IF EDUCATION EXISTS --}}
         @forelse($candidate->educations as $edu)
-            <tr>
-                <td class="border p-2">
-                    <input type="text"
-                           name="qualification[level][]"
-                           value="{{ ucfirst($edu->level) }}"
-                           class="border p-1 rounded w-full">
-                </td>
-                <td class="border p-2">
-                    <input type="text"
-                           name="qualification[board][]"
-                           value="{{ $edu->board_university }}"
-                           class="border p-1 rounded w-full">
-                </td>
-                <td class="border p-2">
-                    <input type="text"
-                           name="qualification[roll_no][]"
-                           value="{{ $edu->roll_no ?? '' }}"
-                           class="border p-1 rounded w-full">
-                </td>
-                <td class="border p-2">
-                    <input type="text"
-                           name="qualification[roll_code][]"
-                           value="{{ $edu->roll_code ?? '' }}"
-                           class="border p-1 rounded w-full">
-                </td>
-                <td class="border p-2">
-                    <input type="text"
-                           name="qualification[year][]"
-                           value="{{ $edu->passing_year }}"
-                           class="border p-1 rounded w-full">
-                </td>
-                <td class="border p-2">
-                    <input type="text"
-                           name="qualification[marks][]"
-                           value="{{ $edu->marks }}"
-                           class="border p-1 rounded w-full">
-                </td>
-            </tr>
+        <tr>
+            <td class="border p-1">
+                <input type="text"
+                       name="qualification[level][]"
+                       value="{{ ucfirst($edu->level) }}"
+                       class="input-soft">
+            </td>
+            <td class="border p-1">
+                <input type="text"
+                       name="qualification[board][]"
+                       value="{{ $edu->board_university }}"
+                       class="input-soft">
+            </td>
+            <td class="border p-1">
+                <input type="text"
+                       name="qualification[roll_no][]"
+                       value="{{ $edu->roll_no }}"
+                       class="input-soft">
+            </td>
+            <td class="border p-1">
+                <input type="text"
+                       name="qualification[roll_code][]"
+                       value="{{ $edu->roll_code }}"
+                       class="input-soft">
+            </td>
+            <td class="border p-1">
+                <input type="text"
+                       name="qualification[year][]"
+                       value="{{ $edu->passing_year }}"
+                       class="input-soft">
+            </td>
+            <td class="border p-1">
+                <input type="text"
+                       name="qualification[marks][]"
+                       value="{{ $edu->marks }}"
+                       class="input-soft">
+            </td>
+        </tr>
         @empty
-            {{-- DEFAULT ROWS --}}
-            @foreach(['8th','10th','12th','Graduation'] as $level)
-            <tr>
-                <td class="border p-2">
-                    <input type="text"
-                           name="qualification[level][]"
-                           value="{{ $level }}"
-                           readonly
-                           class="border p-1 rounded w-full bg-gray-100">
-                </td>
-                <td class="border p-2">
-                    <input type="text" name="qualification[board][]"
-                           class="border p-1 rounded w-full">
-                </td>
-                <td class="border p-2">
-                    <input type="text" name="qualification[roll_no][]"
-                           class="border p-1 rounded w-full">
-                </td>
-                <td class="border p-2">
-                    <input type="text" name="qualification[roll_code][]"
-                           class="border p-1 rounded w-full">
-                </td>
-                <td class="border p-2">
-                    <input type="text" name="qualification[year][]"
-                           class="border p-1 rounded w-full">
-                </td>
-                <td class="border p-2">
-                    <input type="text" name="qualification[marks][]"
-                           class="border p-1 rounded w-full">
-                </td>
-            </tr>
-            @endforeach
+        @foreach(['8th','10th','12th','Graduation'] as $level)
+        <tr>
+            <td class="border p-1">
+                <input type="text"
+                       name="qualification[level][]"
+                       value="{{ $level }}"
+                       class="input-soft bg-gray-100"
+                       readonly>
+            </td>
+            <td class="border p-1"><input type="text" name="qualification[board][]" class="input-soft"></td>
+            <td class="border p-1"><input type="text" name="qualification[roll_no][]" class="input-soft"></td>
+            <td class="border p-1"><input type="text" name="qualification[roll_code][]" class="input-soft"></td>
+            <td class="border p-1"><input type="text" name="qualification[year][]" class="input-soft"></td>
+            <td class="border p-1"><input type="text" name="qualification[marks][]" class="input-soft"></td>
+        </tr>
+        @endforeach
         @endforelse
 
         </tbody>
@@ -233,51 +269,39 @@
     </div>
 </div>
 
+
 {{-- SUBMIT --}}
-<div class="flex justify-end">
-    <button class="bg-green-600 hover:bg-green-700 text-white px-8 py-2 rounded-lg text-lg">
-        ✅ Save KYC
+{{-- SUBMIT + BACK --}}
+<div class="flex justify-end gap-3 mt-4">
+
+    <a href="{{ route('admin.candidates.index') }}"
+       class="px-5 py-2 rounded-lg border border-purple-300 text-purple-600 text-md hover:bg-purple-50 transition">
+        ⬅ Back
+    </a>
+
+    <button type="submit"
+            class="lavender-btn px-6 py-2 text-md">
+        💾 Save KYC
     </button>
+
 </div>
+    
 
 </form>
 
-{{-- JS FOR ADD ROW --}}
+</div>
+
+
 <script>
 function addQualificationRow(){
     document.getElementById('qualificationTable').insertAdjacentHTML('beforeend', `
         <tr>
-            <td class="border p-2">
-                <input type="text"
-                       name="qualification[level][]"
-                       placeholder="Other"
-                       class="border p-1 rounded w-full">
-            </td>
-            <td class="border p-2">
-                <input type="text"
-                       name="qualification[board][]"
-                       class="border p-1 rounded w-full">
-            </td>
-            <td class="border p-2">
-                <input type="text"
-                       name="qualification[roll_no][]"
-                       class="border p-1 rounded w-full">
-            </td>
-            <td class="border p-2">
-                <input type="text"
-                       name="qualification[roll_code][]"
-                       class="border p-1 rounded w-full">
-            </td>
-            <td class="border p-2">
-                <input type="text"
-                       name="qualification[year][]"
-                       class="border p-1 rounded w-full">
-            </td>
-            <td class="border p-2">
-                <input type="text"
-                       name="qualification[marks][]"
-                       class="border p-1 rounded w-full">
-            </td>
+            <td class="border p-1"><input type="text" name="qualification[level][]" class="input-soft"></td>
+            <td class="border p-1"><input type="text" name="qualification[board][]" class="input-soft"></td>
+            <td class="border p-1"><input type="text" name="qualification[roll_no][]" class="input-soft"></td>
+            <td class="border p-1"><input type="text" name="qualification[roll_code][]" class="input-soft"></td>
+            <td class="border p-1"><input type="text" name="qualification[year][]" class="input-soft"></td>
+            <td class="border p-1"><input type="text" name="qualification[marks][]" class="input-soft"></td>
         </tr>
     `);
 }

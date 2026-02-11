@@ -2,6 +2,26 @@
 
 @section('content')
 
+<style>
+.action-btn{
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 70px;
+    height: 36px;
+    border-radius: 9999px;
+    font-weight: 600;
+    transition: all 0.25s ease;
+    overflow: hidden;
+}
+
+.action-btn span{
+    position: absolute;
+    transition: opacity 0.2s ease;
+}
+</style>
+
 <div class="max-w-7xl mx-auto mt-8">
 
     {{-- ================= HEADER ================= --}}
@@ -85,50 +105,34 @@
                     </td>
 
                     {{-- ACTIONS --}}
-                   <td class="text-center space-x-2">
+             <td class="text-center space-x-2">
 
     {{-- Edit --}}
     <a href="{{ route('admin.candidates.edit',$candidate) }}"
-       class="inline-flex items-center justify-center
-              w-9 h-9 rounded-full
-              bg-yellow-100 text-yellow-600
-              hover:bg-yellow-200
-              transition shadow-sm"
-       title="Edit">
+       class="action-btn bg-yellow-100 text-yellow-600 hover:bg-yellow-200"
+       data-text="Edit">
         ✏
     </a>
 
     {{-- KYC --}}
     <a href="{{ route('admin.candidates.kyc.show',$candidate) }}"
-       class="inline-flex items-center justify-center
-              w-9 h-9 rounded-full
-              bg-blue-100 text-blue-600
-              hover:bg-yellow-200
-              transition shadow-sm"
-       title="KYC">
+       class="action-btn bg-blue-100 text-blue-600 hover:bg-blue-200"
+       data-text="KYC">
         🛂
     </a>
 
     {{-- Documents --}}
     <a href="{{ route('admin.candidates.documents',$candidate) }}"
-       class="inline-flex items-center justify-center
-              w-9 h-9 rounded-full
-              bg-gray-500 text-gray-600
-              hover:bg-gray-200
-              transition shadow-sm"
-       title="Documents">
+       class="action-btn bg-gray-500 text-gray-600 hover:bg-gray-100"
+       data-text="Docs">
         📄
     </a>
 
     {{-- Profile --}}
     <a href="{{ route('admin.candidates.profile',$candidate) }}"
-       class="inline-flex items-center justify-center
-              w-9 h-9 rounded-full
-              bg-purple-100 text-purple-600
-              hover:bg-purple-200
-              transition shadow-sm"
-       title="Profile">
-        👁
+       class="action-btn bg-purple-100 text-purple-600 hover:bg-purple-200"
+       data-text="Profile">
+        👤
     </a>
 
     {{-- Delete --}}
@@ -140,17 +144,14 @@
 
         <button type="submit"
                 onclick="return confirm('Delete this candidate?')"
-                class="inline-flex items-center justify-center
-                       w-9 h-9 rounded-full
-                       bg-red-100 text-red-600
-                       hover:bg-red-200
-                       transition shadow-sm"
-                title="Delete">
+                class="action-btn bg-red-100 text-red-600 hover:bg-red-200"
+                data-text="Delete">
             🗑
         </button>
     </form>
 
 </td>
+
 
 
                 </tr>
@@ -164,5 +165,22 @@
     </div>
 
 </div>
+<script>
+document.querySelectorAll('.action-btn').forEach(btn => {
+
+    const original = btn.innerHTML;
+    const text = btn.getAttribute('data-text');
+
+    btn.addEventListener('mouseenter', function() {
+        btn.innerHTML = text;
+    });
+
+    btn.addEventListener('mouseleave', function() {
+        btn.innerHTML = original;
+    });
+
+});
+</script>
+
 
 @endsection
