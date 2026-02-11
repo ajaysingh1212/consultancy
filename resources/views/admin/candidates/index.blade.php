@@ -114,7 +114,7 @@
        class="inline-flex items-center justify-center
               w-9 h-9 rounded-full
               bg-gray-500 text-gray-600
-              hover:bg-gray-200
+              hover:bg-gray-800
               transition shadow-sm"
        title="Documents">
         📄
@@ -124,8 +124,8 @@
     <a href="{{ route('admin.candidates.profile',$candidate) }}"
        class="inline-flex items-center justify-center
               w-9 h-9 rounded-full
-              bg-purple-100 text-purple-600
-              hover:bg-purple-200
+              bg-purple-200 text-purple-200
+              hover:bg-gray-800
               transition shadow-sm"
        title="Profile">
         👁
