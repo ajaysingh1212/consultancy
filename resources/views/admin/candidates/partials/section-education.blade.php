@@ -19,7 +19,8 @@
                 <th class="p-2">Roll Code</th>
                 <th class="p-2">Marks</th>
                 <th class="p-2">Status</th>
-
+                <th class="p-2">Remarks</th>
+                <th class="p-2">Updated By</th>
                 <th class="p-2">Action</th>
             </tr>
         </thead>
@@ -40,6 +41,9 @@
                     {{ ucfirst($edu->verification_status ?? 'pending') }}
                 </span>
             </td>
+            <td class="p-2">{{ $edu->remarks }}</td>
+            <td class="p-2">{{ $edu->verifier->name ?? '-' }} - {{ $edu->updated_at }}</td>
+
             <td class="p-2 text-center space-x-2">
                 <button onclick="openModal('education',{{ $edu->id }})"
                     class="bg-indigo-600 text-white px-3 py-1 rounded text-xs">
