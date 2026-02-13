@@ -13,7 +13,8 @@ class WalletTransaction extends Model
         'description',
         'reference_type',
         'reference_id',
-        'created_by'
+        'created_by',
+        'status'
     ];
 
     public function wallet()

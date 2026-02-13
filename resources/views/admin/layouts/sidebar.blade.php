@@ -170,13 +170,7 @@
                         💰 All Wallets
                     </a>
 
-                    {{-- <a href="{{ route('admin.wallets.show') }}"
-                    class="block px-4 py-2 rounded-lg transition
-                    {{ str_contains($route,'candidates')
-                            ? 'bg-white text-[#9f1239] font-medium'
-                            : 'text-[#2f2f33] hover:bg-[#fde2e6]' }}">
-                        👤 Candidate Wallet
-                    </a> --}}
+
 
                     <a href="#"
                     class="block px-4 py-2 rounded-lg transition
@@ -190,6 +184,40 @@
             </div>
         </li>
         @endcanany
+        @canany(['wallet.view','wallet.manage'])
+            <li>
+                <button onclick="toggleMenu('walletMgmts')"
+                    class="w-full flex items-center justify-between px-4 py-2 rounded-xl transition
+                    {{ $walletActive
+                        ? 'bg-[#9f1239] text-white'
+                        : 'text-[#2f2f33] hover:bg-[#fde2e6]' }}">
+                    <span class="flex items-center gap-3">💰 Expance Mangement</span>
+                    <span id="walletMgmtIcon">{{ $walletActive ? '▾' : '▸' }}</span>
+                </button>
+
+                <div id="walletMgmts" class="{{ $walletActive ? '' : 'hidden' }} mt-2 ml-2">
+                    <div class="bg-[#fff1f3] rounded-2xl p-2 border border-[#f1dadd] space-y-1">
+
+                        @can('expense.category.view')
+                        <a href="{{ route('admin.expensecategory.index') }}"
+                            class="block px-4 py-2 rounded-lg transition">
+                            📂 Expense Categories
+                        </a>
+                        @endcan
+
+                        @can('expense.view')
+                        <a href="{{ route('admin.expenses.index') }}"
+                            class="block px-4 py-2 rounded-lg transition">
+                            🧾 Record Expense
+                        </a>
+                        @endcan
+
+
+
+                    </div>
+                </div>
+            </li>
+            @endcanany
 
     </ul>
 </div>
