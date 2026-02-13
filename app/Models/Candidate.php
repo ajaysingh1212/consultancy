@@ -112,4 +112,9 @@ class Candidate extends Model
 
         return $uid;
     }
+    public function biometric()
+    {
+        return $this->hasOne(CandidateBiometric::class);
+    }
+
 }

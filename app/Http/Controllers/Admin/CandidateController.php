@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Candidate;
+use App\Models\CandidateBiometric;
 use App\Models\CandidateDocument;
 use Illuminate\Http\Request;
 
@@ -136,6 +137,23 @@ class CandidateController extends Controller
         ]);
 
         return view('admin.candidates.show', compact('candidate'));
+    }
+    public function biometric(Candidate $candidate)
+    {
+        return view('admin.candidates.biometric',compact('candidate'));
+    }
+
+    public function biometricStore(Request $request, Candidate $candidate)
+    {
+        $data = $request->all();
+        $data['candidate_id'] = $candidate->id;
+
+        CandidateBiometric::updateOrCreate(
+            ['candidate_id'=>$candidate->id],
+            $data
+        );
+
+        return back()->with('success','Biometric Saved Successfully');
     }
 
 }

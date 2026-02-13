@@ -46,6 +46,17 @@ Route::get('/home', function () {
 | Admin Routes
 |--------------------------------------------------------------------------
 */
+Route::middleware(['role:admin|Super Admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+
+        Route::resource(
+            'candidate-biometrics',
+            \App\Http\Controllers\Admin\CandidateBiometricController::class
+        );
+});
+
 Route::group([
     'prefix' => 'admin',
     'as' => 'admin.',
