@@ -184,44 +184,54 @@ public function storeExpense(Request $request)
 
 public function approveExpense($id)
 {
-    $expense = WalletExpense::findOrFail($id);
+    $expense = WalletExpense::with('wallet')->findOrFail($id);
 
-    if($expense->status !== 'pending'){
-        return back();
+    // Already approved check
+    if ($expense->status !== 'pending') {
+        return back()->with('error','Expense already processed.');
     }
 
     $wallet = $expense->wallet;
 
-    if($wallet->balance < $expense->total_amount){
-        return back()->with('error','Insufficient Balance');
+    // ✅ Wallet Status Check
+    if ($wallet->status !== 'active') {
+        return back()->with('error','Wallet is not active. Approval not allowed.');
     }
 
-    DB::transaction(function() use ($expense, $wallet){
+    // ✅ Balance Check
+    if ($wallet->balance < $expense->grand_total) {
+        return back()->with('error','Insufficient wallet balance.');
+    }
 
-        $wallet->decrement('balance', $expense->total_amount);
+    DB::transaction(function () use ($expense, $wallet) {
 
+        // Deduct from candidate_wallets table
+        $wallet->decrement('balance', $expense->grand_total);
+
+        // Update Expense
         $expense->update([
-            'status' => 'approved',
+            'status'      => 'approved',
             'approved_by' => auth()->id(),
-            'approved_at' => now()
+            'approved_at' => now(),
         ]);
 
-        // Ledger entry
+        // Create ledger transaction
         WalletTransaction::create([
-            'wallet_id' => $wallet->id,
-            'type' => 'debit',
+            'wallet_id'        => $wallet->id,
+            'type'             => 'debit',
             'transaction_type' => 'expense',
-            'amount' => $expense->total_amount,
-            'reference_type' => 'wallet_expense',
-            'reference_id' => $expense->invoice_no,
-            'status' => 'approved',
-            'created_by' => auth()->id()
+            'amount'           => $expense->grand_total,
+            'reference_type'   => 'wallet_expense',
+            'reference_id'     => $expense->invoice_no,
+            'status'           => 'approved',
+            'created_by'       => auth()->id()
         ]);
-
     });
 
-    return back()->with('success','Expense approved & balance deducted.');
+    return back()->with('success','Expense approved & wallet balance deducted.');
 }
+
+
 
 
     public function transactions($walletId)

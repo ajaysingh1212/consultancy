@@ -32,4 +32,10 @@ class WalletExpense extends Model
     {
         return $this->belongsTo(CandidateWallet::class);
     }
+        public function items()
+    {
+        return $this->hasMany(WalletExpenseItem::class);
+    }
+
+
 }

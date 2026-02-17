@@ -14,9 +14,19 @@ use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\CandidateController;
 use App\Http\Controllers\Admin\CandidateKycController;
 use App\Http\Controllers\Admin\CandidateVerificationController;
+use App\Http\Controllers\Admin\EmployerController;
 use App\Http\Controllers\Admin\ExpenseCategoryController;
 use App\Http\Controllers\Admin\WalletController;
 use App\Http\Controllers\Admin\ExpenseController;
+use App\Http\Controllers\Admin\InterviewController;
+use App\Http\Controllers\Admin\JobApplicationController;
+use App\Http\Controllers\Admin\JobBoostController;
+use App\Http\Controllers\Admin\JobController;
+use App\Http\Controllers\Admin\OfferLetterController;
+use App\Http\Controllers\Admin\ShortlistController;
+use App\Http\Controllers\Admin\SkillController;
+use App\Http\Controllers\Admin\SubscriptionPlanController;
+
 /*
 |--------------------------------------------------------------------------
 | Public Routes
@@ -101,7 +111,17 @@ Route::group([
     /* ===== Candidate CRUD ===== */
     Route::resource('candidates', CandidateController::class)
         ->middleware('permission:candidate.view');
+        Route::get('candidate-skills',
+        [\App\Http\Controllers\Admin\CandidateSkillController::class,'index']
+    )->name('candidate-skills.index');
 
+    Route::get('candidate-skills/{candidate}/edit',
+        [\App\Http\Controllers\Admin\CandidateSkillController::class,'edit']
+    )->name('candidate-skills.edit');
+
+    Route::post('candidate-skills/{candidate}',
+        [\App\Http\Controllers\Admin\CandidateSkillController::class,'update']
+    )->name('candidate-skills.update');
     /* ===== Candidate KYC (OPEN FORM) ===== */
     Route::get(
         'candidates/{candidate}/kyc',
@@ -284,7 +304,45 @@ Route::prefix('expenses')
     Route::delete('/{expense}', [ExpenseController::class,'destroy'])->name('destroy');
 
 });
+ // Employers
+    Route::resource('employers', EmployerController::class);
 
+    // Jobs
+    Route::resource('jobs', JobController::class);
+    Route::post('jobs/{job}/boost', [JobBoostController::class,'store'])
+        ->name('jobs.boost');
+    Route::post('jobs/{job}/feature', [JobController::class,'feature'])
+        ->name('jobs.feature');
+
+    // Applications
+    Route::resource('applications', JobApplicationController::class);
+    Route::get('leaderboard',
+    [JobApplicationController::class,'leaderboard'])
+    ->name('admin.applications.leaderboard');
+
+    // Shortlist
+    Route::post('shortlist/{application}',
+        [ShortlistController::class,'store'])
+        ->name('shortlist.store');
+
+    // Interview
+    Route::post('interviews',
+        [InterviewController::class,'store'])
+        ->name('interviews.store');
+
+    // Offer
+    Route::post('offers',
+        [OfferLetterController::class,'store'])
+        ->name('offers.store');
+
+    // Skills
+    Route::resource('skills', SkillController::class);
+    Route::resource('interviews',
+        \App\Http\Controllers\Admin\InterviewController::class);
+    Route::resource('offer-letters',
+        \App\Http\Controllers\Admin\OfferLetterController::class);
+    // Subscription Plans
+    Route::resource('plans', SubscriptionPlanController::class);
 });
 
 /*

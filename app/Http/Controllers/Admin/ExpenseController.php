@@ -12,11 +12,16 @@ class ExpenseController extends Controller
 {
     public function index()
     {
-        $expenses = WalletExpense::with('wallet.candidate','category')
-            ->latest()->paginate(10);
+        $expenses = WalletExpense::with([
+                'wallet.candidate',
+                'items.category'
+            ])
+            ->latest()
+            ->paginate(10);
 
         return view('admin.expense.index', compact('expenses'));
     }
+
 
     public function create()
     {
@@ -34,8 +39,14 @@ class ExpenseController extends Controller
             ->with('success','Expense Created');
     }
 
-    public function show(WalletExpense $expense)
+    public function show($id)
     {
+        $expense = WalletExpense::with([
+            'wallet.candidate.presentAddress',
+            'wallet.candidate.permanentAddress',
+            'items.category'
+        ])->findOrFail($id);
+
         return view('admin.expense.show', compact('expense'));
     }
 
