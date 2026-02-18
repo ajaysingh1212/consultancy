@@ -134,6 +134,13 @@
        data-text="Profile">
         👤
     </a>
+    @role('admin|Super Admin')
+        <a href="{{ route('admin.candidate-biometrics.index',$candidate) }}"
+        class="action-btn bg-indigo-100 text-indigo-600 hover:bg-indigo-200"
+        data-text="Biometric">
+            🧬
+        </a>
+    @endrole
 
     {{-- Delete --}}
     <form action="{{ route('admin.candidates.destroy',$candidate) }}"

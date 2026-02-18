@@ -40,7 +40,21 @@ class Candidate extends Model
     {
         return $this->hasMany(CandidateAddress::class);
     }
+    // Only verified present address
+    public function presentAddress()
+    {
+        return $this->hasOne(CandidateAddress::class)
+            ->where('type', 'present')
+            ->where('status', 'verified');
+    }
 
+    // Only verified permanent address
+    public function permanentAddress()
+    {
+        return $this->hasOne(CandidateAddress::class)
+            ->where('type', 'permanent')
+            ->where('status', 'verified');
+    }
     public function educations()
     {
         return $this->hasMany(CandidateEducation::class);
@@ -111,5 +125,21 @@ class Candidate extends Model
         } while (CandidateWallet::where('wallet_uid', $uid)->exists());
 
         return $uid;
+    }
+    public function biometric()
+    {
+        return $this->hasOne(CandidateBiometric::class);
+    }
+
+
+    public function skills()
+    {
+        return $this->belongsToMany(Skill::class, 'candidate_skills')
+            ->withPivot('proficiency', 'experience_years')
+            ->withTimestamps();
+    }
+    public function applications()
+    {
+        return $this->hasMany(JobApplication::class);
     }
 }

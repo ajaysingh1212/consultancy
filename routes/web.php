@@ -14,7 +14,18 @@ use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\CandidateController;
 use App\Http\Controllers\Admin\CandidateKycController;
 use App\Http\Controllers\Admin\CandidateVerificationController;
+use App\Http\Controllers\Admin\EmployerController;
+use App\Http\Controllers\Admin\ExpenseCategoryController;
 use App\Http\Controllers\Admin\WalletController;
+use App\Http\Controllers\Admin\ExpenseController;
+use App\Http\Controllers\Admin\InterviewController;
+use App\Http\Controllers\Admin\JobApplicationController;
+use App\Http\Controllers\Admin\JobBoostController;
+use App\Http\Controllers\Admin\JobController;
+use App\Http\Controllers\Admin\OfferLetterController;
+use App\Http\Controllers\Admin\ShortlistController;
+use App\Http\Controllers\Admin\SkillController;
+use App\Http\Controllers\Admin\SubscriptionPlanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +56,17 @@ Route::get('/home', function () {
 | Admin Routes
 |--------------------------------------------------------------------------
 */
+Route::middleware(['role:admin|Super Admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+
+        Route::resource(
+            'candidate-biometrics',
+            \App\Http\Controllers\Admin\CandidateBiometricController::class
+        );
+});
+
 Route::group([
     'prefix' => 'admin',
     'as' => 'admin.',
@@ -89,7 +111,17 @@ Route::group([
     /* ===== Candidate CRUD ===== */
     Route::resource('candidates', CandidateController::class)
         ->middleware('permission:candidate.view');
+        Route::get('candidate-skills',
+        [\App\Http\Controllers\Admin\CandidateSkillController::class,'index']
+    )->name('candidate-skills.index');
 
+    Route::get('candidate-skills/{candidate}/edit',
+        [\App\Http\Controllers\Admin\CandidateSkillController::class,'edit']
+    )->name('candidate-skills.edit');
+
+    Route::post('candidate-skills/{candidate}',
+        [\App\Http\Controllers\Admin\CandidateSkillController::class,'update']
+    )->name('candidate-skills.update');
     /* ===== Candidate KYC (OPEN FORM) ===== */
     Route::get(
         'candidates/{candidate}/kyc',
@@ -183,25 +215,134 @@ Route::group([
     ->middleware('role:admin|Super Admin');
 
 
-Route::prefix('wallets')->as('wallets.')->group(function () {
+    Route::prefix('wallets')->as('wallets.')->group(function () {
 
-    // All wallets
-    Route::get('/', [WalletController::class, 'index'])
-        ->name('index');
+        Route::get('/', [WalletController::class,'index'])->name('index');
+        Route::get('/{candidate}', [WalletController::class,'show'])->name('show');
 
-    // Specific wallet
-    Route::get('/{candidate}', [WalletController::class, 'show'])
-        ->name('show');
+        Route::post('/{wallet}/add-money',
+            [WalletController::class,'addMoney'])
+            ->middleware('permission:wallet.credit')
+            ->name('addMoney');
 
-    Route::post('/{wallet}/transaction', [WalletController::class, 'transaction'])
-        ->name('transaction');
-        
-    Route::post('/wallets/{wallet}/transaction', [WalletController::class, 'transaction'])
-    ->name('wallets.transaction');
+        Route::post('/approve/{transaction}',
+            [WalletController::class,'approve'])
+            ->middleware('permission:wallet.credit')
+            ->name('approve');
 
+        Route::post('/expense/store',
+            [WalletController::class,'storeExpense'])
+            ->middleware('permission:wallet.debit')
+            ->name('expense.store');
+
+
+        Route::get('/expense/page', [WalletController::class,'expensePage'])
+            ->name('expense.page');
+
+        Route::get('/{wallet}/transactions',
+        [WalletController::class, 'transactions'])
+        ->name('transactions')
+        ->middleware('permission:wallet.view_transactions');
+
+        Route::get('/{wallet}/transactions/{status}',
+        [WalletController::class,'filterTransactions'])
+        ->name('transactions.filter')
+        ->middleware('permission:wallet.view_transactions');
+
+
+    });
+
+
+    Route::get('wallets/expense', [WalletController::class,'expensePage'])->name('wallets.expense.page');
+    Route::post('wallets/expense/store', [WalletController::class,'storeExpense'])->name('wallets.expense.store');
+    Route::post('wallets/expense/approve/{id}', [WalletController::class,'approveExpense'])->name('wallets.expense.approve');
+    Route::get('wallets/expense/voucher/{id}', [WalletController::class,'downloadVoucher'])->name('wallets.expense.voucher');
+/* ================= EXPENSE CATEGORY ================= */
+
+Route::prefix('expense-categories')
+    ->as('expense.categories.')
+    ->middleware('permission:expense.category.view')
+    ->group(function () {
+
+    Route::get('/', [ExpenseCategoryController::class,'index'])->name('index');
+    Route::get('/create', [ExpenseCategoryController::class,'create'])->name('create')->middleware('permission:expense.category.create');
+    Route::post('/', [ExpenseCategoryController::class,'store'])->name('store');
+    Route::get('/{expenseCategory}', [ExpenseCategoryController::class,'show'])->name('show');
+    Route::get('/{expenseCategory}/edit', [ExpenseCategoryController::class,'edit'])->name('edit')->middleware('permission:expense.category.edit');
+    Route::put('/{expenseCategory}', [ExpenseCategoryController::class,'update'])->name('update');
+    Route::delete('/{expenseCategory}', [ExpenseCategoryController::class,'destroy'])->name('destroy')->middleware('permission:expense.category.delete');
 });
 
 
+/* ================= EXPENSE ================= */
+
+Route::prefix('expensecategory')
+    ->as('expensecategory.')
+    ->middleware('permission:expense.view')
+    ->group(function () {
+
+    Route::get('/', [ExpenseCategoryController::class,'index'])->name('index');
+    Route::get('/create', [ExpenseCategoryController::class,'create'])->name('create')->middleware('permission:expense.create');
+    Route::post('/', [ExpenseCategoryController::class,'store'])->name('store');
+    Route::get('/{expense}', [ExpenseCategoryController::class,'show'])->name('show');
+    Route::get('/{expense}/edit', [ExpenseCategoryController::class,'edit'])->name('edit');
+    Route::put('/{expense}', [ExpenseCategoryController::class,'update'])->name('update');
+    Route::delete('/{expense}', [ExpenseCategoryController::class,'destroy'])->name('destroy');
+
+});
+Route::prefix('expenses')
+    ->as('expenses.')
+    ->middleware('permission:expense.view')
+    ->group(function () {
+
+    Route::get('/', [ExpenseController::class,'index'])->name('index');
+    Route::get('/create', [ExpenseController::class,'create'])->name('create')->middleware('permission:expense.create');
+    Route::post('/', [ExpenseController::class,'store'])->name('store');
+    Route::get('/{expense}', [ExpenseController::class,'show'])->name('show');
+    Route::get('/{expense}/edit', [ExpenseController::class,'edit'])->name('edit');
+    Route::put('/{expense}', [ExpenseController::class,'update'])->name('update');
+    Route::delete('/{expense}', [ExpenseController::class,'destroy'])->name('destroy');
+
+});
+ // Employers
+    Route::resource('employers', EmployerController::class);
+
+    // Jobs
+    Route::resource('jobs', JobController::class);
+    Route::post('jobs/{job}/boost', [JobBoostController::class,'store'])
+        ->name('jobs.boost');
+    Route::post('jobs/{job}/feature', [JobController::class,'feature'])
+        ->name('jobs.feature');
+
+    // Applications
+    Route::resource('applications', JobApplicationController::class);
+    Route::get('leaderboard',
+    [JobApplicationController::class,'leaderboard'])
+    ->name('admin.applications.leaderboard');
+
+    // Shortlist
+    Route::post('shortlist/{application}',
+        [ShortlistController::class,'store'])
+        ->name('shortlist.store');
+
+    // Interview
+    Route::post('interviews',
+        [InterviewController::class,'store'])
+        ->name('interviews.store');
+
+    // Offer
+    Route::post('offers',
+        [OfferLetterController::class,'store'])
+        ->name('offers.store');
+
+    // Skills
+    Route::resource('skills', SkillController::class);
+    Route::resource('interviews',
+        \App\Http\Controllers\Admin\InterviewController::class);
+    Route::resource('offer-letters',
+        \App\Http\Controllers\Admin\OfferLetterController::class);
+    // Subscription Plans
+    Route::resource('plans', SubscriptionPlanController::class);
 });
 
 /*
