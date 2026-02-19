@@ -80,9 +80,27 @@ placeholder="Cover Letter"></textarea>
 <input type="file" name="resume"
 class="input-style">
 
-<button class="submit-btn">
-Save Application
-</button>
+{{-- ACTION BUTTONS --}}
+<div class="flex gap-4 pt-4">
+
+    <a href="{{ route('admin.applications.index') }}"
+       class="px-6 py-3 rounded-xl
+              border border-gray-300
+              bg-white
+              hover:bg-gray-100
+              transition">
+        Cancel
+    </a>
+
+    <button type="submit"
+        class="submit-btn">
+        Save Application
+    </button>
+
+</div>
+
+
+
 
 </div>
 </form>

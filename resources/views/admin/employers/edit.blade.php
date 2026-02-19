@@ -1,3 +1,6 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
 @extends('admin.layouts.app')
 
 @section('content')
@@ -59,7 +62,7 @@ class="input-style">
 <div>
 <h3 class="section-title">Branding & Social Links</h3>
 
-<div class="grid grid-cols-3 gap-6">
+<div class=" form-control grid grid-cols-2 gap-6">
 
 <div>
 <label>Logo</label>
@@ -162,11 +165,9 @@ class="input-style" placeholder="Designation">
 <div>
 <h3 class="section-title">Address</h3>
 
-<div class="grid grid-cols-3 gap-6">
+<div class="grid grid-cols-4 gap-6">
 
-<textarea name="address"
-class="input-style"
-placeholder="Address">{{ old('address',$employer->address) }}</textarea>
+
 
 <input type="text" name="country"
 value="{{ old('country',$employer->country) }}"
@@ -185,6 +186,11 @@ value="{{ old('postal_code',$employer->postal_code) }}"
 class="input-style" placeholder="Postal Code">
 
 </div>
+<br><textarea name="address"
+class="input-style"
+placeholder="Address">{{ old('address',$employer->address) }}</textarea>
+
+
 </div>
 
 {{-- ================= FINANCIAL ================= --}}

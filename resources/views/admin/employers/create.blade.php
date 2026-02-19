@@ -1,3 +1,6 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
 @extends('admin.layouts.app')
 
 @section('content')
@@ -46,10 +49,12 @@ class="input-style" placeholder="Alternate Phone">
 Branding & Links
 </h3>
 
-<div class="grid grid-cols-3 gap-6">
-
-<input type="file" name="logo" class="input-style">
-<input type="file" name="cover_image" class="input-style">
+<div class="form-control grid grid-cols-2 gap-6 ">
+    
+<label for="logo">logo
+<input type="file" name="logo" class="input-style"> </label> 
+<label for="cover_image">Cover Image
+<input type="file" name="cover_image" class="input-style"> </label>
 
 <input type="text" name="website" class="input-style" placeholder="Website">
 <input type="text" name="linkedin" class="input-style" placeholder="LinkedIn">
@@ -102,16 +107,18 @@ HR Contact
 Address
 </h3>
 
-<div class="grid grid-cols-3 gap-6">
+<div class="grid grid-cols-4 gap-6">
 
-<textarea name="address" class="input-style" placeholder="Address"></textarea>
+
 
 <input type="text" name="country" class="input-style" placeholder="Country">
 <input type="text" name="state" class="input-style" placeholder="State">
-<input type="text" name="city" class="input-style" placeholder="City">
+<input type="text" name="city" class="input-style" placeholder="City"> 
 <input type="text" name="postal_code" class="input-style" placeholder="Postal Code">
 
 </div>
+
+<br><textarea name="address" class="input-style" placeholder="Address"></textarea>
 </div>
 
 {{-- ================= STATUS ================= --}}
