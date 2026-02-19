@@ -362,24 +362,3 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])
         ->name('profile.destroy');
 });
-Route::get('/smtp-test', function () {
-    try {
-        Mail::raw('SMTP Working 🚀', function ($message) {
-            $message->to('ajaykumarwrs1997@gmail.com')
-                    ->subject('SMTP Test');
-        });
-
-        return "Mail Sent Successfully";
-    } catch (\Exception $e) {
-        return $e->getMessage();
-    }
-});
-
-Route::get('/mail-debug', function () {
-    return [
-        'host' => config('mail.mailers.smtp.host'),
-        'port' => config('mail.mailers.smtp.port'),
-        'username' => config('mail.mailers.smtp.username'),
-        'password' => config('mail.mailers.smtp.password'),
-    ];
-});
