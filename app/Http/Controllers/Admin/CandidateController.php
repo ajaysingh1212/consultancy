@@ -170,11 +170,16 @@ public function sendOtp(Request $request)
     Session::put('email_otp', $otp);
     Session::put('email_for_otp', $request->email);
 
-    Mail::to($request->email)
-        ->send(new OtpMail($otp, $request->email));
+    // TEMPORARY: disable mail
+    // Mail::to($request->email)
+    //     ->send(new OtpMail($otp, $request->email));
 
-    return response()->json(['success' => true]);
+    return response()->json([
+        'success' => true,
+        'otp' => $otp
+    ]);
 }
+
 
 public function verifyOtp(Request $request)
 {
