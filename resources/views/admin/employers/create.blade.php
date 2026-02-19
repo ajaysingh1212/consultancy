@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="max-w-7xl mx-auto mt-8">
+<div class="max-w-6xl mx-auto mt-8">
 
     <h2 class="text-2xl font-bold text-[#8b5cf6] mb-6">
         🏢 Create Employer
@@ -23,7 +23,7 @@
 Basic Information
 </h3>
 
-<div class="grid grid-cols-2 gap-6">
+<div class="grid grid-cols-4 gap-6">
 
 <input type="text" name="company_name"
 class="input-style" placeholder="Company Name">
@@ -46,7 +46,7 @@ class="input-style" placeholder="Alternate Phone">
 Branding & Links
 </h3>
 
-<div class="grid grid-cols-2 gap-6">
+<div class="grid grid-cols-3 gap-6">
 
 <input type="file" name="logo" class="input-style">
 <input type="file" name="cover_image" class="input-style">
@@ -85,7 +85,7 @@ Company Details
 HR Contact
 </h3>
 
-<div class="grid grid-cols-2 gap-6">
+<div class="grid grid-cols-4 gap-6">
 
 <input type="text" name="contact_person_name" class="input-style" placeholder="HR Name">
 <input type="email" name="contact_person_email" class="input-style" placeholder="HR Email">
@@ -102,7 +102,7 @@ HR Contact
 Address
 </h3>
 
-<div class="grid grid-cols-2 gap-6">
+<div class="grid grid-cols-3 gap-6">
 
 <textarea name="address" class="input-style" placeholder="Address"></textarea>
 
@@ -135,11 +135,26 @@ Status
 </div>
 </div>
 
-<button type="submit"
-class="bg-[#8b5cf6] hover:bg-[#7c3aed]
-text-white px-8 py-3 rounded-xl shadow-md">
-Save Employer
-</button>
+{{-- ================= BUTTONS ================= --}}
+<div class="flex justify-end gap-4 pt-4">
+
+    <a href="{{ route('admin.employers.index') }}"
+       class="px-8 py-3 rounded-xl
+              border border-[#e9e7ff]
+              bg-white
+              hover:bg-[#ede9fe]
+              transition shadow-sm">
+          Cancel
+    </a>
+
+    <button type="submit"
+        class="bg-[#8b5cf6] hover:bg-[#7c3aed]
+        text-white px-8 py-3 rounded-xl shadow-md transition">
+        💾 Save Employer
+    </button>
+
+</div>
+
 
 </div>
 </form>

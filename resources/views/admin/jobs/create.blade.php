@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="max-w-7xl mx-auto mt-8">
+<div class="max-w-6xl mx-auto mt-8">
 
 <h2 class="text-3xl font-bold text-[#8b5cf6] mb-8">
 🚀 Create New Job
@@ -17,7 +17,7 @@
 <div>
 <h3 class="section-title">📌 Basic Information</h3>
 
-<div class="grid grid-cols-3 gap-6">
+<div class="grid grid-cols-4 gap-6">
 
 <select name="employer_id" class="input-style" required>
 <option value="">Select Employer</option>
@@ -96,7 +96,7 @@ Salary Negotiable
 {{-- ================= CONTENT ================= --}}
 <div>
 <h3 class="section-title">📝 Job Content</h3>
-
+<div class="grid grid-cols-3 gap-6">
 <textarea name="job_summary"
 class="input-style" placeholder="Job Summary"></textarea>
 
@@ -113,7 +113,7 @@ class="input-style" placeholder="Requirements"></textarea>
 class="input-style" placeholder="Benefits"></textarea>
 
 </div>
-
+</div>
 {{-- ================= VACANCY ================= --}}
 <div>
 <h3 class="section-title">📅 Vacancy & Deadline</h3>
@@ -219,9 +219,19 @@ placeholder="Weight">
 
 </div>
 
+<div class="flex gap-4 pt-6">
+
+<a href="{{ route('admin.jobs.index') }}"
+class="px-8 py-3 rounded-xl border border-[#e9e7ff]
+bg-white hover:bg-[#ede9fe] transition shadow-sm">
+❌ Cancel
+</a>
+
 <button type="submit" class="submit-btn">
-Save Job
+💾 Save Job
 </button>
+
+</div>
 
 </div>
 </form>

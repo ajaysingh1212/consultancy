@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="max-w-7xl mx-auto mt-8">
+<div class="max-w-6xl mx-auto mt-8">
 
     <h2 class="text-2xl font-bold text-[#8b5cf6] mb-6">
         ✏ Edit Employer
@@ -22,7 +22,7 @@
 <div>
 <h3 class="section-title">Basic Information</h3>
 
-<div class="grid grid-cols-2 gap-6">
+<div class="grid grid-cols-4 gap-6">
 
 <div>
 <label>Company Name</label>
@@ -59,7 +59,7 @@ class="input-style">
 <div>
 <h3 class="section-title">Branding & Social Links</h3>
 
-<div class="grid grid-cols-2 gap-6">
+<div class="grid grid-cols-3 gap-6">
 
 <div>
 <label>Logo</label>
@@ -137,7 +137,7 @@ class="input-style" placeholder="GST Number">
 <div>
 <h3 class="section-title">HR Contact</h3>
 
-<div class="grid grid-cols-2 gap-6">
+<div class="grid grid-cols-4 gap-6">
 
 <input type="text" name="contact_person_name"
 value="{{ old('contact_person_name',$employer->contact_person_name) }}"
@@ -162,7 +162,7 @@ class="input-style" placeholder="Designation">
 <div>
 <h3 class="section-title">Address</h3>
 
-<div class="grid grid-cols-2 gap-6">
+<div class="grid grid-cols-3 gap-6">
 
 <textarea name="address"
 class="input-style"
