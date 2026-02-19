@@ -211,29 +211,46 @@ function startTimer(){
 }
 
 async function sendOtp(){
+
     let email=document.getElementById('email').value;
-    if(!email){ showToast("Enter email first","error"); return; }
 
-    let res=await fetch("{{ route('admin.send.otp') }}",{
-        method:"POST",
-        headers:{
-            'X-CSRF-TOKEN':'{{ csrf_token() }}',
-            'Accept':'application/json',
-            'Content-Type':'application/json'
-        },
-        body:JSON.stringify({email:email})
-    });
+    if(!email){
+        showToast("Email is required","error");
+        return;
+    }
 
-    let data=await res.json();
+    try {
 
-    if(data.success){
-        document.getElementById('otpModal').classList.remove('hidden');
-        startTimer();
-        showToast("OTP Sent Successfully");
-    }else{
-        showToast(data.message,"error");
+        let res=await fetch("{{ route('admin.send.otp') }}",{
+            method:"POST",
+            headers:{
+                'X-CSRF-TOKEN':'{{ csrf_token() }}',
+                'Accept':'application/json',
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify({email:email})
+        });
+
+        let data=await res.json();
+
+        if(!res.ok){
+            showToast(data.message || "Error occurred","error");
+            return;
+        }
+
+        if(data.success){
+            document.getElementById('otpModal').classList.remove('hidden');
+            startTimer();
+            showToast(data.message);
+        }
+
+    } catch(error){
+
+        showToast("Server error. Try again.","error");
+        console.error(error);
     }
 }
+
 
 async function resendOtp(){
     clearInterval(timer);
