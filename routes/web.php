@@ -365,11 +365,3 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])
         ->name('profile.destroy');
 });
-Route::get('/mail-test', function () {
-    Mail::raw('Test Mail Working', function ($message) {
-        $message->to('ajaykumarwrs1997@gmail.com')
-                ->subject('Test Mail');
-    });
-
-    return "Mail Sent";
-});
