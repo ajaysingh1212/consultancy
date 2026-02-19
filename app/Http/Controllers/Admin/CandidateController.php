@@ -161,33 +161,68 @@ class CandidateController extends Controller
     }
 public function sendOtp(Request $request)
 {
-    $request->validate([
-        'email' => 'required|email'
-    ]);
+    try {
 
-    $otp = rand(100000, 999999);
+        $request->validate([
+            'email' => 'required|email'
+        ]);
 
-    Session::put('email_otp', $otp);
-    Session::put('email_for_otp', $request->email);
+        $otp = rand(100000, 999999);
 
-    // TEMPORARY: disable mail
-    Mail::to($request->email)
-        ->send(new OtpMail($otp, $request->email));
+        // Store OTP in session
+        Session::put('email_otp', $otp);
+        Session::put('email_for_otp', $request->email);
 
-    return response()->json([
-        'success' => true,
-        'otp' => $otp
-    ]);
+        // Send Mail
+        Mail::to($request->email)
+            ->send(new OtpMail($otp, $request->email));
+
+        // Log for debugging
+        \Log::info("OTP Sent Successfully", [
+            'email' => $request->email,
+            'otp'   => $otp
+        ]);
+
+        return response()->json([
+            'success' => true
+        ]);
+
+    } catch (\Exception $e) {
+
+        // Log full error
+        \Log::error("OTP Mail Failed", [
+            'message' => $e->getMessage(),
+            'email'   => $request->email ?? null
+        ]);
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Failed to send OTP. Check mail configuration.'
+        ], 500);
+    }
 }
 
 
 public function verifyOtp(Request $request)
 {
+    $request->validate([
+        'otp' => 'required'
+    ]);
+
     if ($request->otp == Session::get('email_otp')) {
+
+        Session::forget('email_otp');
         Session::put('email_verified', true);
-        return response()->json(['success' => true]);
+
+        return response()->json([
+            'success' => true
+        ]);
     }
 
-    return response()->json(['success' => false]);
+    return response()->json([
+        'success' => false,
+        'message' => 'Invalid OTP'
+    ]);
 }
+
 }

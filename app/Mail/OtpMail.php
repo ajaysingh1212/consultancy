@@ -24,7 +24,7 @@ class OtpMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Email Verification OTP',
+            subject: 'Your OTP Code - EemoTrack',
         );
     }
 
@@ -38,7 +38,6 @@ class OtpMail extends Mailable
             ],
         );
     }
-
 
     public function attachments(): array
     {
