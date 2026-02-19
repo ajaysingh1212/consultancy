@@ -4,6 +4,7 @@
     <title>Admin Panel</title>
 
     @vite(['resources/css/app.css'])
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     {{-- DataTables CSS --}}
     <link rel="stylesheet"

@@ -214,6 +214,9 @@ Route::group([
         [CandidateVerificationController::class,'updateDocumentStatus']
     )->name('document.update.status')
     ->middleware('role:admin|Super Admin');
+    // candidate email verification
+    Route::post('/send-otp', [App\Http\Controllers\Admin\CandidateController::class, 'sendOtp'])->name('send.otp');
+    Route::post('/verify-otp', [App\Http\Controllers\Admin\CandidateController::class, 'verifyOtp'])->name('verify.otp');
 
 
     Route::prefix('wallets')->as('wallets.')->group(function () {
@@ -361,17 +364,4 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/profile', [ProfileController::class, 'destroy'])
         ->name('profile.destroy');
-});
-Route::get('/test-mail', function () {
-    Mail::raw('Mail working successfully 🚀', function ($message) {
-        $message->to('your_personal_email@gmail.com')
-                ->subject('Mail Test');
-    });
-});
-Route::get('/mail-debug', function () {
-    return [
-        'host' => config('mail.mailers.smtp.host'),
-        'port' => config('mail.mailers.smtp.port'),
-        'username' => config('mail.mailers.smtp.username'),
-    ];
 });
