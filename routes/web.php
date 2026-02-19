@@ -380,5 +380,6 @@ Route::get('/mail-debug', function () {
         'host' => config('mail.mailers.smtp.host'),
         'port' => config('mail.mailers.smtp.port'),
         'username' => config('mail.mailers.smtp.username'),
+        'password' => config('mail.mailer.smpt.password'),
     ];
 });
