@@ -187,16 +187,12 @@ async function sendOtp() {
         let response = await fetch("{{ route('admin.send.otp') }}", {
             method: "POST",
             headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ email: email })
         });
-
-        if (!response.ok) {
-            throw new Error("Server error");
-        }
 
         let data = await response.json();
 
@@ -207,10 +203,11 @@ async function sendOtp() {
         }
 
     } catch (error) {
-        alert("Something went wrong. Check console.");
         console.error(error);
+        alert("Server error.");
     }
 }
+
 
 async function verifyOtp() {
 
