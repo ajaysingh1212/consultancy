@@ -161,45 +161,34 @@ class CandidateController extends Controller
     }
 public function sendOtp(Request $request)
 {
-    try {
+    $request->validate([
+        'email' => 'required|email'
+    ]);
 
-        $request->validate([
-            'email' => 'required|email'
-        ]);
-
-        $otp = rand(100000, 999999);
-
-        // Store OTP in session
-        Session::put('email_otp', $otp);
-        Session::put('email_for_otp', $request->email);
-
-        // Send Mail
-        Mail::to($request->email)
-            ->send(new OtpMail($otp, $request->email));
-
-        // Log for debugging
-        \Log::info("OTP Sent Successfully", [
-            'email' => $request->email,
-            'otp'   => $otp
-        ]);
-
-        return response()->json([
-            'success' => true
-        ]);
-
-    } catch (\Exception $e) {
-
-        // Log full error
-        \Log::error("OTP Mail Failed", [
-            'message' => $e->getMessage(),
-            'email'   => $request->email ?? null
-        ]);
-
-        return response()->json([
-            'success' => false,
-            'message' => 'Failed to send OTP. Check mail configuration.'
-        ], 500);
+    // Rate limit: allow resend only after 60 sec
+    if (Session::has('otp_last_sent')) {
+        if (now()->diffInSeconds(Session::get('otp_last_sent')) < 60) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Please wait before requesting new OTP.'
+            ], 429);
+        }
     }
+
+    $otp = rand(100000, 999999);
+
+    Session::put('email_otp', $otp);
+    Session::put('email_for_otp', $request->email);
+    Session::put('otp_expires_at', now()->addMinutes(5));
+    Session::put('otp_attempts', 0);
+    Session::put('otp_last_sent', now());
+
+    Mail::to($request->email)
+        ->send(new \App\Mail\OtpMail($otp, $request->email));
+
+    return response()->json([
+        'success' => true
+    ]);
 }
 
 
@@ -209,19 +198,46 @@ public function verifyOtp(Request $request)
         'otp' => 'required'
     ]);
 
+    if (!Session::has('email_otp')) {
+        return response()->json([
+            'success' => false,
+            'message' => 'OTP expired.'
+        ], 400);
+    }
+
+    // Expiry check
+    if (now()->greaterThan(Session::get('otp_expires_at'))) {
+        Session::forget(['email_otp','otp_expires_at']);
+        return response()->json([
+            'success' => false,
+            'message' => 'OTP expired.'
+        ], 400);
+    }
+
+    // Attempt limit
+    $attempts = Session::get('otp_attempts', 0);
+
+    if ($attempts >= 5) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Too many attempts.'
+        ], 429);
+    }
+
     if ($request->otp == Session::get('email_otp')) {
 
-        Session::forget('email_otp');
-        Session::put('email_verified', true);
+        Session::forget(['email_otp','otp_expires_at','otp_attempts']);
 
         return response()->json([
             'success' => true
         ]);
     }
 
+    Session::put('otp_attempts', $attempts + 1);
+
     return response()->json([
         'success' => false,
-        'message' => 'Invalid OTP'
+        'message' => 'Invalid OTP.'
     ]);
 }
 
