@@ -171,8 +171,8 @@ public function sendOtp(Request $request)
     Session::put('email_for_otp', $request->email);
 
     // TEMPORARY: disable mail
-    // Mail::to($request->email)
-    //     ->send(new OtpMail($otp, $request->email));
+    Mail::to($request->email)
+        ->send(new OtpMail($otp, $request->email));
 
     return response()->json([
         'success' => true,
