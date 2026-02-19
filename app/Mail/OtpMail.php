@@ -39,6 +39,7 @@ class OtpMail extends Mailable
         );
     }
 
+
     public function attachments(): array
     {
         return [];
