@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\OtpMail;
 use App\Models\Candidate;
 use App\Models\CandidateBiometric;
 use App\Models\CandidateDocument;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
+
 
 class CandidateController extends Controller
 {
@@ -155,5 +159,30 @@ class CandidateController extends Controller
 
         return back()->with('success','Biometric Saved Successfully');
     }
+public function sendOtp(Request $request)
+{
+    $request->validate([
+        'email' => 'required|email'
+    ]);
 
+    $otp = rand(100000, 999999);
+
+    Session::put('email_otp', $otp);
+    Session::put('email_for_otp', $request->email);
+
+    Mail::to($request->email)
+        ->send(new OtpMail($otp, $request->email));
+
+    return response()->json(['success' => true]);
+}
+
+public function verifyOtp(Request $request)
+{
+    if ($request->otp == Session::get('email_otp')) {
+        Session::put('email_verified', true);
+        return response()->json(['success' => true]);
+    }
+
+    return response()->json(['success' => false]);
+}
 }

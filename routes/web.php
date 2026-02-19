@@ -214,6 +214,9 @@ Route::group([
         [CandidateVerificationController::class,'updateDocumentStatus']
     )->name('document.update.status')
     ->middleware('role:admin|Super Admin');
+    // candidate email verification
+    Route::post('/send-otp', [App\Http\Controllers\Admin\CandidateController::class, 'sendOtp'])->name('send.otp');
+    Route::post('/verify-otp', [App\Http\Controllers\Admin\CandidateController::class, 'verifyOtp'])->name('verify.otp');
 
 
     Route::prefix('wallets')->as('wallets.')->group(function () {
