@@ -16,7 +16,7 @@
         </ul>
     </div>
     @endif
-
+  
     @if(session('error'))
         <div class="bg-red-100 text-red-700 p-4 rounded-xl mb-6">
             {{ session('error') }}
