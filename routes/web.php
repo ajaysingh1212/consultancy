@@ -26,6 +26,7 @@ use App\Http\Controllers\Admin\OfferLetterController;
 use App\Http\Controllers\Admin\ShortlistController;
 use App\Http\Controllers\Admin\SkillController;
 use App\Http\Controllers\Admin\SubscriptionPlanController;
+use Illuminate\Support\Facades\Mail;
 
 /*
 |--------------------------------------------------------------------------
@@ -360,4 +361,17 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/profile', [ProfileController::class, 'destroy'])
         ->name('profile.destroy');
+});
+Route::get('/test-mail', function () {
+    Mail::raw('Mail working successfully 🚀', function ($message) {
+        $message->to('your_personal_email@gmail.com')
+                ->subject('Mail Test');
+    });
+});
+Route::get('/mail-debug', function () {
+    return [
+        'host' => config('mail.mailers.smtp.host'),
+        'port' => config('mail.mailers.smtp.port'),
+        'username' => config('mail.mailers.smtp.username'),
+    ];
 });
