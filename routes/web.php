@@ -362,12 +362,19 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])
         ->name('profile.destroy');
 });
-Route::get('/test-mail', function () {
-    Mail::raw('Mail working successfully 🚀', function ($message) {
-        $message->to('your_personal_email@gmail.com')
-                ->subject('Mail Test');
-    });
+Route::get('/smtp-test', function () {
+    try {
+        Mail::raw('SMTP Working 🚀', function ($message) {
+            $message->to('ajaykumarwrs1997@gmail.com')
+                    ->subject('SMTP Test');
+        });
+
+        return "Mail Sent Successfully";
+    } catch (\Exception $e) {
+        return $e->getMessage();
+    }
 });
+
 Route::get('/mail-debug', function () {
     return [
         'host' => config('mail.mailers.smtp.host'),
