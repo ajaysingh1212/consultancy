@@ -284,5 +284,17 @@ public function verifyOtp(Request $request)
         'attempts_left' => 5 - ($attempts + 1)
     ]);
 }
+public function showJson($id)
+{
+    $candidate = \App\Models\Candidate::with([
+        'skills',
+        'applications.job',
+        'documents',
+        'presentAddress',
+        'permanentAddress',
+        'educations',
+    ])->findOrFail($id);
 
+    return response()->json($candidate);
+}
 }
