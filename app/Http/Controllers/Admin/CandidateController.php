@@ -239,6 +239,10 @@ public function verifyOtp(Request $request)
         'success' => false,
         'message' => 'Invalid OTP.'
     ]);
+    
 }
-
+public function otpPage()
+{
+    return view('emails.otp');
+}
 }

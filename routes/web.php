@@ -365,3 +365,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])
         ->name('profile.destroy');
 });
+    Route::get('/otp-page',[App\Http\Controllers\Admin\CandidateController::class,'otpPage'])->name('otp.page');
