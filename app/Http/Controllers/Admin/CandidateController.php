@@ -286,8 +286,3 @@ public function verifyOtp(Request $request)
 }
 
 }
-public function otpPage()
-{
-    return view('emails.otp');
-}
-}
