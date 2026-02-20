@@ -27,15 +27,17 @@ class CandidateController extends Controller
 
     public function store(Request $request)
     {
+
         $candidate = Candidate::create($request->validate([
-            'full_name'=>'required',
-            'mobile'=>'required|unique:candidates',
-            'passport_number'=>'required|unique:candidates',
-            'dob'=>'required',
-            'gender'=>'required',
-            'marital_status'=>'required',
-            'nationality'=>'required',
-            'passport_expiry'=>'required',
+            'full_name'       => 'required|string|max:255',
+            'mobile'          => 'required|unique:candidates,mobile',
+            'email'           => 'required|email|unique:candidates,email',
+            'passport_number' => 'required|unique:candidates,passport_number',
+            'dob'             => 'required|date',
+            'gender'          => 'required',
+            'marital_status'  => 'required',
+            'nationality'     => 'required',
+            'passport_expiry' => 'required|date',
         ]));
 
         return redirect()->route('admin.candidates.index')
@@ -159,55 +161,80 @@ class CandidateController extends Controller
 
         return back()->with('success','Biometric Saved Successfully');
     }
+
+
 public function sendOtp(Request $request)
 {
-    $request->validate([
-        'email' => 'required|email'
-    ]);
+    try {
 
-    // Rate limit: allow resend only after 60 sec
-    if (Session::has('otp_last_sent')) {
-        if (now()->diffInSeconds(Session::get('otp_last_sent')) < 60) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Please wait before requesting new OTP.'
-            ], 429);
-        }
+        $request->validate([
+            'email' => 'required|email'
+        ]);
+
+        // Generate new OTP every time (no timing restriction)
+        $otp = rand(100000, 999999);
+
+        // Overwrite old OTP data
+        Session::put('email_otp', $otp);
+        Session::put('email_for_otp', $request->email);
+        Session::put('otp_expires_at', now()->addMinutes(5));
+        Session::put('otp_attempts', 0);
+
+        // Send email
+        Mail::to($request->email)
+            ->send(new OtpMail($otp, $request->email));
+
+        return response()->json([
+            'success' => true,
+            'message' => 'OTP sent successfully.'
+        ]);
+
+    } catch (\Illuminate\Validation\ValidationException $e) {
+
+        return response()->json([
+            'success' => false,
+            'message' => $e->errors()['email'][0] ?? 'Invalid email address.'
+        ], 422);
+
+    } catch (\Exception $e) {
+
+        \Log::error("OTP Send Failed", [
+            'error' => $e->getMessage(),
+            'email' => $request->email ?? null
+        ]);
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Something went wrong. Please try again.'
+        ], 500);
     }
-
-    $otp = rand(100000, 999999);
-
-    Session::put('email_otp', $otp);
-    Session::put('email_for_otp', $request->email);
-    Session::put('otp_expires_at', now()->addMinutes(5));
-    Session::put('otp_attempts', 0);
-    Session::put('otp_last_sent', now());
-
-    Mail::to($request->email)
-        ->send(new \App\Mail\OtpMail($otp, $request->email));
-
-    return response()->json([
-        'success' => true
-    ]);
 }
+
 
 
 public function verifyOtp(Request $request)
 {
     $request->validate([
-        'otp' => 'required'
+        'otp' => 'required|digits:6'
     ]);
 
+    // Check if OTP exists
     if (!Session::has('email_otp')) {
         return response()->json([
             'success' => false,
-            'message' => 'OTP expired.'
+            'message' => 'OTP expired. Please request a new one.'
         ], 400);
     }
 
-    // Expiry check
+    // Check expiry
     if (now()->greaterThan(Session::get('otp_expires_at'))) {
-        Session::forget(['email_otp','otp_expires_at']);
+
+        Session::forget([
+            'email_otp',
+            'otp_expires_at',
+            'otp_attempts'
+        ]);
+
         return response()->json([
             'success' => false,
             'message' => 'OTP expired.'
@@ -218,28 +245,46 @@ public function verifyOtp(Request $request)
     $attempts = Session::get('otp_attempts', 0);
 
     if ($attempts >= 5) {
+
+        Session::forget([
+            'email_otp',
+            'otp_expires_at',
+            'otp_attempts'
+        ]);
+
         return response()->json([
             'success' => false,
-            'message' => 'Too many attempts.'
+            'message' => 'Too many attempts. Please request new OTP.'
         ], 429);
     }
 
+    // Check OTP
     if ($request->otp == Session::get('email_otp')) {
 
-        Session::forget(['email_otp','otp_expires_at','otp_attempts']);
+        Session::forget([
+            'email_otp',
+            'otp_expires_at',
+            'otp_attempts'
+        ]);
+
+        Session::put('email_verified', true);
 
         return response()->json([
-            'success' => true
+            'success' => true,
+            'message' => 'Email verified successfully.'
         ]);
     }
 
+    // Increment attempts
     Session::put('otp_attempts', $attempts + 1);
 
     return response()->json([
         'success' => false,
-        'message' => 'Invalid OTP.'
+        'message' => 'Invalid OTP.',
+        'attempts_left' => 5 - ($attempts + 1)
     ]);
-    
+}
+
 }
 public function otpPage()
 {

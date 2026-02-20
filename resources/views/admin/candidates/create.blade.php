@@ -32,7 +32,7 @@
 
         <!-- EMAIL SECTION -->
         <div class="mb-8">
-            <label class="block text-lg font-semibold text-gray-700 mb-3">
+            <label class="block text-lg font-semibold mb-3">
                 📧 Email Address
             </label>
 
@@ -42,24 +42,20 @@
                        id="email"
                        required
                        placeholder="Enter candidate email"
-                       class="w-full px-5 py-4 rounded-2xl
-                              border border-[#ddd6fe]
-                              focus:ring-2 focus:ring-[#7c3aed]
-                              focus:outline-none bg-white shadow-sm">
+                       class="w-full px-5 py-4 rounded-2xl border border-[#ddd6fe] focus:ring-2 focus:ring-[#7c3aed]">
 
                 <button type="button"
-                        onclick="sendOtp()"
+                        onclick="sendOtp(false)"
                         id="verifyBtn"
                         class="bg-[#7c3aed] hover:bg-[#6d28d9]
-                               text-white px-6 py-4
-                               rounded-2xl shadow-md transition">
+                               text-white px-6 py-4 rounded-2xl shadow-md transition">
                     Verify
                 </button>
             </div>
 
             <p id="emailVerifiedMsg"
-               class="text-green-600 font-medium mt-3 hidden">
-                ✅ Email Successfully Verified
+               class="text-green-600 font-medium mt-3 hidden flex items-center gap-2">
+                <span class="text-xl">✔</span> Email Successfully Verified
             </p>
         </div>
 
@@ -67,67 +63,35 @@
 
         <!-- REST FORM -->
         <div id="remainingFields"
-             class="grid grid-cols-1 md:grid-cols-2 gap-6
-                    opacity-50 pointer-events-none transition duration-300">
+             class="grid grid-cols-1 md:grid-cols-2 gap-6 opacity-50 pointer-events-none transition duration-300">
 
-            <div>
-                <label class="block text-sm font-semibold mb-2">👤 Full Name</label>
-                <input name="full_name" class="w-full px-4 py-3 rounded-xl border border-[#ddd6fe]">
-            </div>
+            <input name="full_name" placeholder="Full Name" class="p-3 rounded-xl border border-[#ddd6fe]">
+            <input name="mobile" placeholder="Mobile" class="p-3 rounded-xl border border-[#ddd6fe]">
+            <input name="passport_number" placeholder="Passport Number" class="p-3 rounded-xl border border-[#ddd6fe]">
+            <input type="date" name="dob" class="p-3 rounded-xl border border-[#ddd6fe]">
+            <input name="nationality" placeholder="Nationality" class="p-3 rounded-xl border border-[#ddd6fe]">
+            <input type="date" name="passport_expiry" class="p-3 rounded-xl border border-[#ddd6fe]">
 
-            <div>
-                <label class="block text-sm font-semibold mb-2">📱 Mobile</label>
-                <input name="mobile" class="w-full px-4 py-3 rounded-xl border border-[#ddd6fe]">
-            </div>
+            <select name="gender" class="p-3 rounded-xl border border-[#ddd6fe]">
+                <option value="">Select Gender</option>
+                <option>Male</option>
+                <option>Female</option>
+            </select>
 
-            <div>
-                <label class="block text-sm font-semibold mb-2">🛂 Passport Number</label>
-                <input name="passport_number" class="w-full px-4 py-3 rounded-xl border border-[#ddd6fe]">
-            </div>
-
-            <div>
-                <label class="block text-sm font-semibold mb-2">🎂 Date of Birth</label>
-                <input type="date" name="dob" class="w-full px-4 py-3 rounded-xl border border-[#ddd6fe]">
-            </div>
-
-            <div>
-                <label class="block text-sm font-semibold mb-2">🌍 Nationality</label>
-                <input name="nationality" class="w-full px-4 py-3 rounded-xl border border-[#ddd6fe]">
-            </div>
-
-            <div>
-                <label class="block text-sm font-semibold mb-2">📅 Passport Expiry</label>
-                <input type="date" name="passport_expiry" class="w-full px-4 py-3 rounded-xl border border-[#ddd6fe]">
-            </div>
-
-            <div>
-                <label class="block text-sm font-semibold mb-2">🚻 Gender</label>
-                <select name="gender" class="w-full px-4 py-3 rounded-xl border border-[#ddd6fe]">
-                    <option value="">Select Gender</option>
-                    <option>Male</option>
-                    <option>Female</option>
-                </select>
-            </div>
-
-            <div>
-                <label class="block text-sm font-semibold mb-2">💍 Marital Status</label>
-                <select name="marital_status" class="w-full px-4 py-3 rounded-xl border border-[#ddd6fe]">
-                    <option value="">Select Status</option>
-                    <option>Single</option>
-                    <option>Married</option>
-                </select>
-            </div>
+            <select name="marital_status" class="p-3 rounded-xl border border-[#ddd6fe]">
+                <option value="">Select Status</option>
+                <option>Single</option>
+                <option>Married</option>
+            </select>
 
         </div>
 
-        <div class="mt-10">
-            <button type="submit"
-                    id="submitBtn"
-                    disabled
-                    class="bg-gray-400 text-white px-8 py-4 rounded-2xl shadow-md transition">
-                💾 Save Candidate
-            </button>
-        </div>
+        <button type="submit"
+                id="submitBtn"
+                disabled
+                class="mt-8 bg-gray-400 text-white px-8 py-3 rounded-xl transition">
+            💾 Save Candidate
+        </button>
 
     </form>
 </div>
@@ -135,34 +99,46 @@
 
 <!-- OTP MODAL -->
 <div id="otpModal"
-     class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+     class="fixed inset-0 bg-black bg-opacity-60 hidden z-50 flex items-center justify-center">
 
-    <div class="bg-white p-8 rounded-3xl w-96 shadow-2xl text-center animate-scale">
+    <!-- Modal Box -->
+    <div class="bg-white rounded-3xl shadow-2xl text-center p-8 relative"
+         style="width:1600px;height:600px;">
 
-        <h3 class="text-2xl font-bold text-[#7c3aed] mb-4">
+        <h3 class="text-2xl font-bold text-[#7c3aed] mb-2" style="font-size: 50px; padding:20px;">
             🔐 Email Verification
         </h3>
 
-        <div class="text-red-500 font-semibold mb-3" id="countdown">
+        <!-- Modal Message -->
+        <div id="modalMessage"
+             class="text-sm font-medium mb-3 hidden"></div>
+
+        <!-- Countdown -->
+        <div id="countdown" class="text-red-500 font-semibold mb-4">
             05:00
         </div>
 
-        <!-- 6 Digit OTP -->
-        <div class="flex justify-center gap-2 mb-4">
+        <!-- OTP Inputs -->
+        <div class="flex justify-center space-x-3 mb-6">
             @for($i=0;$i<6;$i++)
                 <input maxlength="1"
-                       class="otp-input w-12 h-12 text-center text-xl border rounded-lg focus:ring-2 focus:ring-[#7c3aed]"
+                       class="otp-input w-12 h-20 text-center text-xl border-2 border-[#ddd6fe] rounded-lg focus:border-[#7c3aed] focus:outline-none"
                        oninput="moveNext(this)"
                        onkeydown="moveBack(event,this)">
             @endfor
         </div>
 
+        <!-- Loader -->
+        <div id="loader" class="hidden mb-4">
+            <div class="loader mx-auto"></div>
+        </div>
+
         <button onclick="verifyOtp()"
-                class="bg-[#7c3aed] text-white w-full py-3 rounded-xl transition">
+                class="bg-[#7c3aed] hover:bg-[#6d28d9] text-white w-full py-2 rounded-xl transition" style="height: 80px;">
             Verify OTP
         </button>
 
-        <button onclick="resendOtp()"
+        <button onclick="sendOtp(true)"
                 id="resendBtn"
                 class="mt-3 text-[#7c3aed] font-semibold hidden">
             Resend OTP
@@ -171,23 +147,17 @@
     </div>
 </div>
 
-<!-- Toast -->
-<div id="toast"
-     class="fixed bottom-5 right-5 px-6 py-3 rounded-lg text-white hidden">
-</div>
-
 
 <script>
 
 let timer;
 let timeLeft = 300;
 
-function showToast(message, type="success") {
-    let toast = document.getElementById('toast');
-    toast.innerText = message;
-    toast.classList.remove('hidden');
-    toast.style.background = type === "error" ? "#dc2626" : "#16a34a";
-    setTimeout(()=>toast.classList.add('hidden'),3000);
+function showModalMessage(message,type="success"){
+    let msg=document.getElementById('modalMessage');
+    msg.innerText=message;
+    msg.classList.remove('hidden','text-red-500','text-green-600');
+    msg.classList.add(type==="error"?"text-red-500":"text-green-600");
 }
 
 function moveNext(el){
@@ -211,29 +181,38 @@ function getOtp(){
 }
 
 function startTimer(){
+
+    clearInterval(timer);
     timeLeft=300;
     document.getElementById('resendBtn').classList.add('hidden');
 
     timer=setInterval(()=>{
         let min=Math.floor(timeLeft/60);
         let sec=timeLeft%60;
+
         document.getElementById('countdown').innerText=
-            `${String(min).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+        `${String(min).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
 
         if(timeLeft<=0){
             clearInterval(timer);
             document.getElementById('resendBtn').classList.remove('hidden');
         }
+
         timeLeft--;
+
     },1000);
 }
 
-async function sendOtp(){
+async function sendOtp(isResend){
 
     let email=document.getElementById('email').value;
-    if(!email){ showToast("Enter email first","error"); return; }
 
-    let res=await fetch("{{ route('admin.send.otp') }}",{
+    if(!email){
+        showModalMessage("Email required","error");
+        return;
+    }
+
+    let response=await fetch("{{ route('admin.send.otp') }}",{
         method:"POST",
         headers:{
             'X-CSRF-TOKEN':'{{ csrf_token() }}',
@@ -243,23 +222,33 @@ async function sendOtp(){
         body:JSON.stringify({email:email})
     });
 
-    let data=await res.json();
+    let data=await response.json();
+
+    if(!response.ok){
+        showModalMessage(data.message || "Error occurred","error");
+        return;
+    }
 
     if(data.success){
-        document.getElementById('otpModal').classList.remove('hidden');
+
+        if(!isResend){
+            document.getElementById('otpModal').classList.remove('hidden');
+            setTimeout(()=>{
+                document.querySelector('.otp-input').focus();
+            },200);
+        }
+
         startTimer();
-        showToast("OTP Sent Successfully");
+        showModalMessage("OTP sent successfully","success");
+
     }else{
-        showToast(data.message || "Failed","error");
+        showModalMessage(data.message || "Failed","error");
     }
 }
 
-async function resendOtp(){
-    clearInterval(timer);
-    await sendOtp();
-}
-
 async function verifyOtp(){
+
+    document.getElementById('loader').classList.remove('hidden');
 
     let otp=getOtp();
 
@@ -275,38 +264,44 @@ async function verifyOtp(){
 
     let data=await res.json();
 
+    document.getElementById('loader').classList.add('hidden');
+
     if(data.success){
 
-        clearInterval(timer);
         document.getElementById('otpModal').classList.add('hidden');
 
         document.getElementById('remainingFields')
-            .classList.remove('pointer-events-none','opacity-50');
+        .classList.remove('pointer-events-none','opacity-50');
 
         document.getElementById('submitBtn').disabled=false;
-        document.getElementById('submitBtn').classList.remove('bg-gray-400');
-        document.getElementById('submitBtn').classList.add('bg-[#7c3aed]');
+        document.getElementById('submitBtn')
+        .classList.remove('bg-gray-400');
+        document.getElementById('submitBtn')
+        .classList.add('bg-[#7c3aed]');
 
         document.getElementById('emailVerifiedMsg').classList.remove('hidden');
         document.getElementById('verifyBtn').disabled=true;
         document.getElementById('email').readOnly=true;
 
-        showToast("Email Verified Successfully 🎉");
-
     }else{
-        showToast(data.message || "Invalid OTP","error");
+        showModalMessage(data.message || "Invalid OTP","error");
     }
 }
 
 </script>
 
 <style>
-@keyframes scaleIn{
-    from{transform:scale(0.8);opacity:0;}
-    to{transform:scale(1);opacity:1;}
+.loader{
+    border:4px solid #f3f3f3;
+    border-top:4px solid #7c3aed;
+    border-radius:50%;
+    width:30px;
+    height:30px;
+    animation:spin 1s linear infinite;
 }
-.animate-scale{
-    animation:scaleIn 0.2s ease-in-out;
+@keyframes spin{
+    0%{transform:rotate(0deg);}
+    100%{transform:rotate(360deg);}
 }
 </style>
 
