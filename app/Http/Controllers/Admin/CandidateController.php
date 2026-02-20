@@ -169,28 +169,16 @@ public function sendOtp(Request $request)
             'email' => 'required|email'
         ]);
 
-        // 🔒 Rate limit (60 sec)
-        if (Session::has('otp_last_sent')) {
-
-            $secondsPassed = now()->diffInSeconds(Session::get('otp_last_sent'));
-
-            if ($secondsPassed < 60) {
-
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Please wait ' . (60 - $secondsPassed) . ' seconds before requesting a new OTP.'
-                ], 429);
-            }
-        }
-
+        // Generate new OTP every time (no timing restriction)
         $otp = rand(100000, 999999);
 
+        // Overwrite old OTP data
         Session::put('email_otp', $otp);
         Session::put('email_for_otp', $request->email);
         Session::put('otp_expires_at', now()->addMinutes(5));
         Session::put('otp_attempts', 0);
-        Session::put('otp_last_sent', now());
 
+        // Send email
         Mail::to($request->email)
             ->send(new OtpMail($otp, $request->email));
 
@@ -203,13 +191,14 @@ public function sendOtp(Request $request)
 
         return response()->json([
             'success' => false,
-            'message' => $e->errors()['email'][0] ?? 'Invalid email.'
+            'message' => $e->errors()['email'][0] ?? 'Invalid email address.'
         ], 422);
 
     } catch (\Exception $e) {
 
         \Log::error("OTP Send Failed", [
             'error' => $e->getMessage(),
+            'email' => $request->email ?? null
         ]);
 
         return response()->json([
@@ -218,7 +207,6 @@ public function sendOtp(Request $request)
         ], 500);
     }
 }
-
 
 
 
