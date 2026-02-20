@@ -27,9 +27,11 @@ class CandidateController extends Controller
 
     public function store(Request $request)
     {
+        dd($request->all());
         $candidate = Candidate::create($request->validate([
             'full_name'=>'required',
             'mobile'=>'required|unique:candidates',
+            'email' =>'required',
             'passport_number'=>'required|unique:candidates',
             'dob'=>'required',
             'gender'=>'required',
