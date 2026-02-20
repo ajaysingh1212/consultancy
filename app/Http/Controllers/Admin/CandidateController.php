@@ -29,15 +29,15 @@ class CandidateController extends Controller
     {
         dd($request->all());
         $candidate = Candidate::create($request->validate([
-            'full_name'=>'required',
-            'mobile'=>'required|unique:candidates',
-            'email' =>'required',
-            'passport_number'=>'required|unique:candidates',
-            'dob'=>'required',
-            'gender'=>'required',
-            'marital_status'=>'required',
-            'nationality'=>'required',
-            'passport_expiry'=>'required',
+            'full_name'       => 'required|string|max:255',
+            'mobile'          => 'required|unique:candidates,mobile',
+            'email'           => 'required|email|unique:candidates,email',
+            'passport_number' => 'required|unique:candidates,passport_number',
+            'dob'             => 'required|date',
+            'gender'          => 'required',
+            'marital_status'  => 'required',
+            'nationality'     => 'required',
+            'passport_expiry' => 'required|date',
         ]));
 
         return redirect()->route('admin.candidates.index')
