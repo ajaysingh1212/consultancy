@@ -27,7 +27,7 @@ class CandidateController extends Controller
 
     public function store(Request $request)
     {
-        dd($request->all());
+       
         $candidate = Candidate::create($request->validate([
             'full_name'       => 'required|string|max:255',
             'mobile'          => 'required|unique:candidates,mobile',
