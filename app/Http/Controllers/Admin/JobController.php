@@ -111,4 +111,13 @@ class JobController extends Controller
 
         return back()->with('success','Job deleted');
     }
+    public function showJson($id)
+    {
+        $job = Job::with([
+            'employer',
+            'skills'
+        ])->findOrFail($id);
+
+        return response()->json($job);
+    }
 }

@@ -29,6 +29,14 @@
         str_contains($route, 'wallets');
 
 
+    $visaActive = request()->routeIs('admin.visa-applications.*')
+                || request()->routeIs('admin.visa-documents.*');
+
+    $deploymentActive = request()->routeIs('admin.deployments.*');
+
+    $candidateActive = request()->routeIs('admin.candidates.*');
+
+
 @endphp
 
 <div class="w-64 min-h-screen bg-[#faf7f8] border-r border-[#f1dadd]">
@@ -290,6 +298,85 @@
                 </a>
             </li>
             @endif
+
+            <li>
+            <button onclick="toggleMenu('visaMenu')"
+                class="w-full flex justify-between px-4 py-2 rounded-xl transition
+                {{ $visaActive ? 'bg-[#9f1239] text-white' : 'hover:bg-[#fde2e6]' }}">
+                🛂 Visa Management
+                <span id="visaMenuIcon">{{ $visaActive ? '▾' : '▸' }}</span>
+            </button>
+
+            <div id="visaMenu"
+                 class="{{ $visaActive ? '' : 'hidden' }} mt-2 ml-3 space-y-1">
+
+                <a href="{{ route('admin.visa-applications.index') }}"
+                   class="block px-3 py-2 rounded-lg hover:bg-[#fde2e6]">
+                    📄 All Applications
+                </a>
+
+                <a href="{{ route('admin.visa-applications.stage','medical') }}"
+                   class="block px-3 py-2 rounded-lg hover:bg-[#fde2e6]">
+                    🧪 Medical Stage
+                </a>
+
+                <a href="{{ route('admin.visa-applications.stage','pcc') }}"
+                   class="block px-3 py-2 rounded-lg hover:bg-[#fde2e6]">
+                    📑 PCC Stage
+                </a>
+
+                <a href="{{ route('admin.visa-applications.stage','submitted') }}"
+                   class="block px-3 py-2 rounded-lg hover:bg-[#fde2e6]">
+                    📨 Visa Submitted
+                </a>
+
+                <a href="{{ route('admin.visa-applications.stage','approved') }}"
+                   class="block px-3 py-2 rounded-lg hover:bg-[#fde2e6]">
+                    ✅ Visa Approved
+                </a>
+
+                <a href="{{ route('admin.visa-applications.stage','ticket_issued') }}"
+                   class="block px-3 py-2 rounded-lg hover:bg-[#fde2e6]">
+                    🎫 Ticket Issued
+                </a>
+
+                <a href="{{ route('admin.visa-applications.stage','deployed') }}"
+                   class="block px-3 py-2 rounded-lg hover:bg-[#fde2e6]">
+                    🚀 Deployed
+                </a>
+
+                <a href="{{ route('admin.visa-documents.index') }}"
+                   class="block px-3 py-2 rounded-lg hover:bg-[#fde2e6]">
+                    📑 Visa Documents
+                </a>
+
+            </div>
+        </li>
+
+        {{-- DEPLOYMENT MANAGEMENT --}}
+        <li>
+            <button onclick="toggleMenu('deploymentMenu')"
+                class="w-full flex justify-between px-4 py-2 rounded-xl transition
+                {{ $deploymentActive ? 'bg-[#9f1239] text-white' : 'hover:bg-[#fde2e6]' }}">
+                🚀 Deployment
+                <span id="deploymentMenuIcon">{{ $deploymentActive ? '▾' : '▸' }}</span>
+            </button>
+
+            <div id="deploymentMenu"
+                 class="{{ $deploymentActive ? '' : 'hidden' }} mt-2 ml-3 space-y-1">
+
+                <a href="{{ route('admin.deployments.index') }}"
+                   class="block px-3 py-2 rounded-lg hover:bg-[#fde2e6]">
+                    ✈ Deployment Tracking
+                </a>
+
+                <a href="#"
+                   class="block px-3 py-2 rounded-lg hover:bg-[#fde2e6]">
+                    📊 Deployment Reports
+                </a>
+
+            </div>
+        </li>
     </ul>
 </div>
 

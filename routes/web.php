@@ -26,6 +26,10 @@ use App\Http\Controllers\Admin\OfferLetterController;
 use App\Http\Controllers\Admin\ShortlistController;
 use App\Http\Controllers\Admin\SkillController;
 use App\Http\Controllers\Admin\SubscriptionPlanController;
+use App\Http\Controllers\Admin\VisaApplicationController;
+use App\Http\Controllers\Admin\DeploymentController;
+use App\Http\Controllers\Admin\VisaDocumentController;
+
 use Illuminate\Support\Facades\Mail;
 
 /*
@@ -347,6 +351,22 @@ Route::prefix('expenses')
         \App\Http\Controllers\Admin\OfferLetterController::class);
     // Subscription Plans
     Route::resource('plans', SubscriptionPlanController::class);
+
+    // visa
+    Route::resource('visa-applications', VisaApplicationController::class);
+        Route::resource('deployments', 'DeploymentController');
+        Route::resource('visa-documents', 'VisaDocumentController');
+    Route::get('visa-applications/stage/{stage}',
+            [\App\Http\Controllers\Admin\VisaApplicationController::class, 'stage']
+        )->name('visa-applications.stage');
+    Route::post('visa-documents/{visaDocument}/verify',
+    [VisaDocumentController::class,'verify'])->name('visa-documents.verify');
+
+    Route::get('/candidates/{id}/json', [\App\Http\Controllers\Admin\CandidateController::class, 'showJson'])
+            ->name('candidates.json');
+
+    Route::get('/jobs/{id}/json', [\App\Http\Controllers\Admin\JobController::class, 'showJson'])
+            ->name('jobs.json');
 });
 
 /*

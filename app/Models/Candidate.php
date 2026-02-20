@@ -143,4 +143,13 @@ class Candidate extends Model
     {
         return $this->hasMany(JobApplication::class);
     }
+    public function visaApplications()
+    {
+        return $this->hasMany(VisaApplication::class);
+    }
+
+    public function deployments()
+    {
+        return $this->hasMany(Deployment::class);
+    }
 }

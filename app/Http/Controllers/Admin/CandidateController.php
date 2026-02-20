@@ -27,7 +27,7 @@ class CandidateController extends Controller
 
     public function store(Request $request)
     {
-       
+
         $candidate = Candidate::create($request->validate([
             'full_name'       => 'required|string|max:255',
             'mobile'          => 'required|unique:candidates,mobile',
@@ -284,5 +284,17 @@ public function verifyOtp(Request $request)
         'attempts_left' => 5 - ($attempts + 1)
     ]);
 }
+public function showJson($id)
+{
+    $candidate = \App\Models\Candidate::with([
+        'skills',
+        'applications.job',
+        'documents',
+        'presentAddress',
+        'permanentAddress',
+        'educations',
+    ])->findOrFail($id);
 
+    return response()->json($candidate);
+}
 }
