@@ -115,7 +115,8 @@ class JobController extends Controller
     {
         $job = Job::with([
             'employer',
-            'skills'
+            'skills',
+            'applications'   // ✅ THIS WAS MISSING
         ])->findOrFail($id);
 
         return response()->json($job);
