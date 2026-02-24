@@ -228,6 +228,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const candidateSelect = document.querySelector('select[name="candidate_id"]');
     const jobSelect = document.querySelector('select[name="job_id"]');
 
+    /* ================= CANDIDATE DETAILS ================= */
     if (candidateSelect) {
         candidateSelect.addEventListener('change', function () {
 
@@ -245,43 +246,67 @@ document.addEventListener('DOMContentLoaded', function () {
                     card.id = 'candidateCardDynamic';
                     card.className = 'bg-gray-50 p-6 rounded-2xl shadow mt-6';
 
-                    let skills = data.skills.map(s =>
-                        `<span class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs mr-2">
+                    let skills = data.skills?.map(s =>
+                        `<span class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs mr-2 mb-1 inline-block">
                             ${s.name} (${s.pivot.experience_years} yrs)
                         </span>`
-                    ).join('');
+                    ).join('') || 'No Skills';
 
-                    let jobs = data.applications.map(a =>
+                    let jobs = data.applications?.map(a =>
                         `<li>• ${a.job.job_title}</li>`
-                    ).join('');
+                    ).join('') || 'No Applications';
+
+                    let documentStatus = data.documents?.some(doc => doc.is_verified)
+                        ? '<span class="text-green-600 font-semibold">Verified</span>'
+                        : '<span class="text-red-500 font-semibold">Pending</span>';
 
                     card.innerHTML = `
-                        <h3 class="font-bold text-purple-700 mb-4">👤 Candidate Details</h3>
-                        <p><strong>Email:</strong> ${data.email ?? '-'}</p>
-                        <p><strong>Mobile:</strong> ${data.mobile ?? '-'}</p>
-                        <p><strong>KYC:</strong> ${data.kyc_completion}%</p>
+                        <h3 class="font-bold text-purple-700 mb-6 text-lg">👤 Candidate Details</h3>
 
-                        <div class="mt-3">
-                            <strong>Skills:</strong><br>
-                            ${skills || 'No Skills'}
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div><p><strong>Email:</strong><br>${data.email ?? '-'}</p></div>
+                            <div>
+                                <p><strong>KYC Status:</strong><br>
+                                ${data.kyc_verified 
+                                    ? '<span class="text-green-600 font-semibold">Verified</span>' 
+                                    : '<span class="text-red-500 font-semibold">Pending</span>'}
+                                </p>
+                            </div>
+                            <div><p><strong>Mobile:</strong><br>${data.mobile ?? '-'}</p></div>
+                            <div>
+                                <p><strong>Address Status:</strong><br>
+                                ${data.address_verified 
+                                    ? '<span class="text-green-600 font-semibold">Verified</span>' 
+                                    : '<span class="text-red-500 font-semibold">Pending</span>'}
+                                </p>
+                            </div>
+                            <div><p><strong>KYC Completion:</strong><br>${data.kyc_completion ?? 0}%</p></div>
+                            <div><p><strong>Documents Status:</strong><br>${documentStatus}</p></div>
                         </div>
 
-                        <div class="mt-3">
+                        <hr class="my-5">
+
+                        <div class="mt-3"><strong>Skills:</strong><br>${skills}</div>
+
+                        <div class="mt-4">
                             <strong>Applied Jobs:</strong>
-                            <ul>${jobs || 'No Applications'}</ul>
+                            <ul class="ml-4 mt-1">${jobs}</ul>
                         </div>
                     `;
 
-                    document.querySelector('form').prepend(card);
+                    candidateSelect.closest('div').appendChild(card);
                 });
         });
     }
 
+    /* ================= JOB DETAILS ================= */
     if (jobSelect) {
         jobSelect.addEventListener('change', function () {
 
             let id = this.value;
             if (!id) return;
+
+            let selectedCandidateId = candidateSelect?.value ?? null;
 
             fetch(`/admin/jobs/${id}/json`)
                 .then(res => res.json())
@@ -294,24 +319,134 @@ document.addEventListener('DOMContentLoaded', function () {
                     card.id = 'jobCardDynamic';
                     card.className = 'bg-gray-50 p-6 rounded-2xl shadow mt-6';
 
-                    let skills = data.skills.map(s =>
+                    let skills = data.skills?.map(s =>
                         `<li>• ${s.name} ${s.pivot.is_mandatory ? '(Mandatory)' : ''}</li>`
-                    ).join('');
+                    ).join('') || '<li>No Skills Listed</li>';
+
+                    let applied = false;
+                    if (selectedCandidateId && data.applications) {
+                        applied = data.applications.some(a => 
+                            a.candidate_id == selectedCandidateId
+                        );
+                    }
+
+                    let appliedStatus = applied
+                        ? '<span class="text-green-600 font-semibold">Yes, Applied</span>'
+                        : '<span class="text-red-500 font-semibold">Not Applied</span>';
 
                     card.innerHTML = `
-                        <h3 class="font-bold text-purple-700 mb-4">💼 Job Details</h3>
-                        <p><strong>Salary:</strong> ${data.salary_min} - ${data.salary_max}</p>
-                        <p><strong>Status:</strong> ${data.is_active ? 'Active' : 'Inactive'}</p>
-                        <p><strong>Employer:</strong> ${data.employer.company_name}</p>
-                        <p><strong>Verified:</strong> ${data.employer.is_verified ? 'Yes' : 'No'}</p>
+                        <h3 class="font-bold text-purple-700 mb-6 text-lg">💼 Job & Employer Details</h3>
 
-                        <div class="mt-3">
-                            <strong>Required Skills:</strong>
-                            <ul>${skills || 'No Skills Listed'}</ul>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div><p><strong>Job Title:</strong><br>${data.job_title ?? '-'}</p></div>
+                            <div>
+                                <p><strong>Status:</strong><br>
+                                ${data.is_active 
+                                    ? '<span class="text-green-600 font-semibold">Active</span>' 
+                                    : '<span class="text-red-500 font-semibold">Inactive</span>'}
+                                </p>
+                            </div>
+                            <div><p><strong>Salary:</strong><br>${data.salary_min ?? 0} - ${data.salary_max ?? 0}</p></div>
+                            <div><p><strong>Vacancies:</strong><br>${data.vacancies ?? 0}</p></div>
+                            <div><p><strong>Selected Candidate Applied?</strong><br>${appliedStatus}</p></div>
+                        </div>
+
+                        <hr class="my-6">
+
+                        <h4 class="font-semibold text-purple-700 mb-4">🏢 Employer Details</h4>
+
+                        <!-- Visible -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div><p><strong>Company Name:</strong><br>${data.employer?.company_name ?? '-'}</p></div>
+                            <div><p><strong>Company Email:</strong><br>${data.employer?.company_email ?? '-'}</p></div>
+                            <div><p><strong>Company Phone:</strong><br>${data.employer?.company_phone ?? '-'}</p></div>
+                            <div><p><strong>Industry:</strong><br>${data.employer?.industry ?? '-'}</p></div>
+                        </div>
+
+                        <!-- Hidden -->
+                        <div id="employerMoreSection" class="hidden mt-6">
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div><p><strong>Alternate Phone:</strong><br>${data.employer?.alternate_phone ?? '-'}</p></div>
+                                <div>
+                                    <p><strong>Website:</strong><br>
+                                    ${data.employer?.website 
+                                        ? `<a href="${data.employer.website}" target="_blank" class="text-blue-600 underline">${data.employer.website}</a>` 
+                                        : '-'}
+                                    </p>
+                                </div>
+                                <div><p><strong>Company Size:</strong><br>${data.employer?.company_size ?? '-'}</p></div>
+                                <div><p><strong>Founded Year:</strong><br>${data.employer?.founded_year ?? '-'}</p></div>
+                                <div><p><strong>Registration No:</strong><br>${data.employer?.registration_number ?? '-'}</p></div>
+                                <div><p><strong>GST Number:</strong><br>${data.employer?.gst_number ?? '-'}</p></div>
+                                <div><p><strong>Tax Number:</strong><br>${data.employer?.tax_number ?? '-'}</p></div>
+                                <div>
+                                    <p><strong>Verified:</strong><br>
+                                    ${data.employer?.is_verified 
+                                        ? '<span class="text-green-600 font-semibold">Verified</span>' 
+                                        : '<span class="text-red-500 font-semibold">Not Verified</span>'}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="mt-6">
+                                <strong>Full Address:</strong>
+                                <p class="text-sm text-gray-700 mt-1">
+                                    ${data.employer?.address ?? ''},
+                                    ${data.employer?.city ?? ''},
+                                    ${data.employer?.state ?? ''},
+                                    ${data.employer?.country ?? ''},
+                                    ${data.employer?.postal_code ?? ''}
+                                </p>
+                            </div>
+
+                            <hr class="my-6">
+
+                            <h4 class="font-semibold text-purple-700 mb-4">👨‍💼 HR Contact Details</h4>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div><p><strong>HR Name:</strong><br>${data.employer?.contact_person_name ?? '-'}</p></div>
+                                <div><p><strong>Designation:</strong><br>${data.employer?.contact_person_designation ?? '-'}</p></div>
+                                <div><p><strong>HR Email:</strong><br>${data.employer?.contact_person_email ?? '-'}</p></div>
+                                <div><p><strong>HR Phone:</strong><br>${data.employer?.contact_person_phone ?? '-'}</p></div>
+                            </div>
+
+                            <hr class="my-6">
+
+                            <div>
+                                <strong>Required Skills:</strong>
+                                <ul class="ml-4 mt-2">${skills}</ul>
+                            </div>
+
+                            <div class="mt-4">
+                                <strong>Job Description:</strong>
+                                <p class="text-sm text-gray-700 mt-1">
+                                    ${data.description ?? 'No description available'}
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <div class="mt-4">
+                            <button type="button" id="toggleEmployerBtn"
+                                class="text-purple-600 font-semibold hover:underline">
+                                See More ↓
+                            </button>
                         </div>
                     `;
 
-                    document.querySelector('form').prepend(card);
+                    jobSelect.closest('div').appendChild(card);
+
+                    const toggleBtn = card.querySelector('#toggleEmployerBtn');
+                    const moreSection = card.querySelector('#employerMoreSection');
+
+                    toggleBtn.addEventListener('click', function () {
+                        moreSection.classList.toggle('hidden');
+                        toggleBtn.innerText = moreSection.classList.contains('hidden')
+                            ? 'See More ↓'
+                            : 'See Less ↑';
+                    });
+
                 });
         });
     }
