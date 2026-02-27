@@ -132,9 +132,22 @@
 
 {{-- ================= IDENTITY ================= --}}
 <div class="card-soft p-3">
-    <h3 class="font-semibold lavender-text mb-3 text-md">
-        🪪 Identity Details
-    </h3>
+   <div style="display: flex; justify-content: space-between; align-items: center;">
+    <div>
+        <h3 class="font-semibold lavender-text mb-3 text-md">
+            🪪 Identity Details
+        </h3>
+    </div>
+    <div>
+        <a href="https://myaadhaar.uidai.gov.in/genricDownloadAadhaar/en"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="padding: 6px; border:2px double #6d5dfc; border-radius:5px;">
+           Verify Aadhar Card
+        </a>
+    </div>
+    </div>
+
 
     <div class="grid md:grid-cols-2 gap-3 text-md">
 
@@ -285,7 +298,7 @@
     </button>
 
 </div>
-    
+
 
 </form>
 
