@@ -26,9 +26,9 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
                 <div>
-                    <label class="font-medium">Candidate *</label>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Select Candidate *</label>
                     <select name="candidate_id" required
-                            class="w-full border rounded-xl p-3 mt-2">
+                            class="w-full border rounded-xl p-3 focus:ring-2 focus:ring-purple-500">
                         <option value="">Select Candidate</option>
                         @foreach($candidates as $candidate)
                             <option value="{{ $candidate->id }}"
@@ -40,9 +40,9 @@
                 </div>
 
                 <div>
-                    <label class="font-medium">Job *</label>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Select Job *</label>
                     <select name="job_id" required
-                            class="w-full border rounded-xl p-3 mt-2">
+                            class="w-full border rounded-xl p-3 focus:ring-2 focus:ring-purple-500">
                         <option value="">Select Job</option>
                         @foreach($jobs as $job)
                             <option value="{{ $job->id }}"
@@ -65,41 +65,61 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                <input name="visa_type" required
-                       value="{{ old('visa_type') }}"
-                       placeholder="Visa Type *"
-                       class="border rounded-xl p-3">
+                <div>
+                    <label class="block text-sm font-semibold mb-2">Visa Type *</label>
+                    <input name="visa_type" required
+                           value="{{ old('visa_type') }}"
+                           class="border rounded-xl p-3 w-full focus:ring-2 focus:ring-purple-500">
+                </div>
 
-                <input name="country" required
-                       value="{{ old('country') }}"
-                       placeholder="Destination Country *"
-                       class="border rounded-xl p-3">
+                <div>
+                    <label class="block text-sm font-semibold mb-2">Destination Country *</label>
+                    <input name="country" required
+                           value="{{ old('country') }}"
+                           class="border rounded-xl p-3 w-full focus:ring-2 focus:ring-purple-500">
+                </div>
 
-                <input name="embassy_name"
-                       value="{{ old('embassy_name') }}"
-                       placeholder="Embassy Name"
-                       class="border rounded-xl p-3">
+                <div>
+                    <label class="block text-sm font-semibold mb-2">Embassy Name</label>
+                    <input name="embassy_name"
+                           value="{{ old('embassy_name') }}"
+                           class="border rounded-xl p-3 w-full focus:ring-2 focus:ring-purple-500">
+                </div>
 
-                <input name="application_number"
-                       value="{{ old('application_number') }}"
-                       placeholder="Application Number"
-                       class="border rounded-xl p-3">
+                <div>
+                    <label class="block text-sm font-semibold mb-2">Application Number</label>
+                    <input name="application_number"
+                           value="{{ old('application_number') }}"
+                           class="border rounded-xl p-3 w-full focus:ring-2 focus:ring-purple-500">
+                </div>
 
-                <input type="date" name="submission_date"
-                       value="{{ old('submission_date') }}"
-                       class="border rounded-xl p-3">
+                <div>
+                    <label class="block text-sm font-semibold mb-2">Submission Date</label>
+                    <input type="date" name="submission_date"
+                           value="{{ old('submission_date') }}"
+                           class="border rounded-xl p-3 w-full focus:ring-2 focus:ring-purple-500">
+                </div>
 
-                <input type="date" name="appointment_date"
-                       value="{{ old('appointment_date') }}"
-                       class="border rounded-xl p-3">
+                <div>
+                    <label class="block text-sm font-semibold mb-2">Appointment Date</label>
+                    <input type="date" name="appointment_date"
+                           value="{{ old('appointment_date') }}"
+                           class="border rounded-xl p-3 w-full focus:ring-2 focus:ring-purple-500">
+                </div>
 
-                <input type="date" name="visa_issue_date"
-                       value="{{ old('visa_issue_date') }}"
-                       class="border rounded-xl p-3">
+                <div>
+                    <label class="block text-sm font-semibold mb-2">Visa Issue Date</label>
+                    <input type="date" name="visa_issue_date"
+                           value="{{ old('visa_issue_date') }}"
+                           class="border rounded-xl p-3 w-full focus:ring-2 focus:ring-purple-500">
+                </div>
 
-                <input type="date" name="visa_expiry_date"
-                       value="{{ old('visa_expiry_date') }}"
-                       class="border rounded-xl p-3">
+                <div>
+                    <label class="block text-sm font-semibold mb-2">Visa Expiry Date</label>
+                    <input type="date" name="visa_expiry_date"
+                           value="{{ old('visa_expiry_date') }}"
+                           class="border rounded-xl p-3 w-full focus:ring-2 focus:ring-purple-500">
+                </div>
 
             </div>
         </div>
@@ -113,25 +133,34 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-                <select name="medical_status" class="border rounded-xl p-3">
-                    <option value="pending">Medical Pending</option>
-                    <option value="fit">Medical Fit</option>
-                    <option value="unfit">Medical Unfit</option>
-                </select>
+                <div>
+                    <label class="block text-sm font-semibold mb-2">Medical Status</label>
+                    <select name="medical_status" class="border rounded-xl p-3 w-full focus:ring-2 focus:ring-purple-500">
+                        <option value="pending">Medical Pending</option>
+                        <option value="fit">Medical Fit</option>
+                        <option value="unfit">Medical Unfit</option>
+                    </select>
+                </div>
 
-                <select name="immigration_status" class="border rounded-xl p-3">
-                    <option value="pending">Immigration Pending</option>
-                    <option value="approved">Immigration Approved</option>
-                    <option value="rejected">Immigration Rejected</option>
-                </select>
+                <div>
+                    <label class="block text-sm font-semibold mb-2">Immigration Status</label>
+                    <select name="immigration_status" class="border rounded-xl p-3 w-full focus:ring-2 focus:ring-purple-500">
+                        <option value="pending">Immigration Pending</option>
+                        <option value="approved">Immigration Approved</option>
+                        <option value="rejected">Immigration Rejected</option>
+                    </select>
+                </div>
 
-                <select name="visa_status" class="border rounded-xl p-3">
-                    <option value="draft">Draft</option>
-                    <option value="submitted">Submitted</option>
-                    <option value="processing">Processing</option>
-                    <option value="approved">Approved</option>
-                    <option value="rejected">Rejected</option>
-                </select>
+                <div>
+                    <label class="block text-sm font-semibold mb-2">Visa Status</label>
+                    <select name="visa_status" class="border rounded-xl p-3 w-full focus:ring-2 focus:ring-purple-500">
+                        <option value="draft">Draft</option>
+                        <option value="submitted">Submitted</option>
+                        <option value="processing">Processing</option>
+                        <option value="approved">Approved</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                </div>
 
             </div>
         </div>
@@ -145,30 +174,47 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-                <input type="date" name="medical_date"
-                       value="{{ old('medical_date') }}"
-                       placeholder="Medical Date"
-                       class="border rounded-xl p-3">
+                <div>
+                    <label class="block text-sm font-semibold mb-2">Medical Date</label>
+                    <input type="date" name="medical_date"
+                           value="{{ old('medical_date') }}"
+                           class="border rounded-xl p-3 w-full focus:ring-2 focus:ring-purple-500">
+                </div>
 
-                <input type="date" name="pcc_date"
-                       value="{{ old('pcc_date') }}"
-                       class="border rounded-xl p-3">
+                <div>
+                    <label class="block text-sm font-semibold mb-2">PCC Date</label>
+                    <input type="date" name="pcc_date"
+                           value="{{ old('pcc_date') }}"
+                           class="border rounded-xl p-3 w-full focus:ring-2 focus:ring-purple-500">
+                </div>
 
-                <input type="date" name="visa_submitted_date"
-                       value="{{ old('visa_submitted_date') }}"
-                       class="border rounded-xl p-3">
+                <div>
+                    <label class="block text-sm font-semibold mb-2">Visa Submitted Date</label>
+                    <input type="date" name="visa_submitted_date"
+                           value="{{ old('visa_submitted_date') }}"
+                           class="border rounded-xl p-3 w-full focus:ring-2 focus:ring-purple-500">
+                </div>
 
-                <input type="date" name="visa_approved_date"
-                       value="{{ old('visa_approved_date') }}"
-                       class="border rounded-xl p-3">
+                <div>
+                    <label class="block text-sm font-semibold mb-2">Visa Approved Date</label>
+                    <input type="date" name="visa_approved_date"
+                           value="{{ old('visa_approved_date') }}"
+                           class="border rounded-xl p-3 w-full focus:ring-2 focus:ring-purple-500">
+                </div>
 
-                <input type="date" name="ticket_issued_date"
-                       value="{{ old('ticket_issued_date') }}"
-                       class="border rounded-xl p-3">
+                <div>
+                    <label class="block text-sm font-semibold mb-2">Ticket Issued Date</label>
+                    <input type="date" name="ticket_issued_date"
+                           value="{{ old('ticket_issued_date') }}"
+                           class="border rounded-xl p-3 w-full focus:ring-2 focus:ring-purple-500">
+                </div>
 
-                <input type="date" name="deployment_date"
-                       value="{{ old('deployment_date') }}"
-                       class="border rounded-xl p-3">
+                <div>
+                    <label class="block text-sm font-semibold mb-2">Deployment Date</label>
+                    <input type="date" name="deployment_date"
+                           value="{{ old('deployment_date') }}"
+                           class="border rounded-xl p-3 w-full focus:ring-2 focus:ring-purple-500">
+                </div>
 
             </div>
         </div>
@@ -182,15 +228,19 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                <input type="number" step="0.01" name="visa_fee"
-                       value="{{ old('visa_fee') }}"
-                       placeholder="Visa Fee"
-                       class="border rounded-xl p-3">
+                <div>
+                    <label class="block text-sm font-semibold mb-2">Visa Fee</label>
+                    <input type="number" step="0.01" name="visa_fee"
+                           value="{{ old('visa_fee') }}"
+                           class="border rounded-xl p-3 w-full focus:ring-2 focus:ring-purple-500">
+                </div>
 
-                <input type="number" step="0.01" name="service_charge"
-                       value="{{ old('service_charge') }}"
-                       placeholder="Service Charge"
-                       class="border rounded-xl p-3">
+                <div>
+                    <label class="block text-sm font-semibold mb-2">Service Charge</label>
+                    <input type="number" step="0.01" name="service_charge"
+                           value="{{ old('service_charge') }}"
+                           class="border rounded-xl p-3 w-full focus:ring-2 focus:ring-purple-500">
+                </div>
 
             </div>
         </div>
@@ -202,9 +252,10 @@
                 📝 Remarks
             </h3>
 
+            <label class="block text-sm font-semibold mb-2">Additional Notes</label>
             <textarea name="remarks"
                       rows="4"
-                      class="w-full border rounded-xl p-3"
+                      class="w-full border rounded-xl p-3 focus:ring-2 focus:ring-purple-500"
                       placeholder="Additional notes...">{{ old('remarks') }}</textarea>
         </div>
 
@@ -267,16 +318,16 @@ document.addEventListener('DOMContentLoaded', function () {
                             <div><p><strong>Email:</strong><br>${data.email ?? '-'}</p></div>
                             <div>
                                 <p><strong>KYC Status:</strong><br>
-                                ${data.kyc_verified 
-                                    ? '<span class="text-green-600 font-semibold">Verified</span>' 
+                                ${data.kyc_verified
+                                    ? '<span class="text-green-600 font-semibold">Verified</span>'
                                     : '<span class="text-red-500 font-semibold">Pending</span>'}
                                 </p>
                             </div>
                             <div><p><strong>Mobile:</strong><br>${data.mobile ?? '-'}</p></div>
                             <div>
                                 <p><strong>Address Status:</strong><br>
-                                ${data.address_verified 
-                                    ? '<span class="text-green-600 font-semibold">Verified</span>' 
+                                ${data.address_verified
+                                    ? '<span class="text-green-600 font-semibold">Verified</span>'
                                     : '<span class="text-red-500 font-semibold">Pending</span>'}
                                 </p>
                             </div>
@@ -325,7 +376,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     let applied = false;
                     if (selectedCandidateId && data.applications) {
-                        applied = data.applications.some(a => 
+                        applied = data.applications.some(a =>
                             a.candidate_id == selectedCandidateId
                         );
                     }
@@ -341,8 +392,8 @@ document.addEventListener('DOMContentLoaded', function () {
                             <div><p><strong>Job Title:</strong><br>${data.job_title ?? '-'}</p></div>
                             <div>
                                 <p><strong>Status:</strong><br>
-                                ${data.is_active 
-                                    ? '<span class="text-green-600 font-semibold">Active</span>' 
+                                ${data.is_active
+                                    ? '<span class="text-green-600 font-semibold">Active</span>'
                                     : '<span class="text-red-500 font-semibold">Inactive</span>'}
                                 </p>
                             </div>
@@ -370,8 +421,8 @@ document.addEventListener('DOMContentLoaded', function () {
                                 <div><p><strong>Alternate Phone:</strong><br>${data.employer?.alternate_phone ?? '-'}</p></div>
                                 <div>
                                     <p><strong>Website:</strong><br>
-                                    ${data.employer?.website 
-                                        ? `<a href="${data.employer.website}" target="_blank" class="text-blue-600 underline">${data.employer.website}</a>` 
+                                    ${data.employer?.website
+                                        ? `<a href="${data.employer.website}" target="_blank" class="text-blue-600 underline">${data.employer.website}</a>`
                                         : '-'}
                                     </p>
                                 </div>
@@ -382,8 +433,8 @@ document.addEventListener('DOMContentLoaded', function () {
                                 <div><p><strong>Tax Number:</strong><br>${data.employer?.tax_number ?? '-'}</p></div>
                                 <div>
                                     <p><strong>Verified:</strong><br>
-                                    ${data.employer?.is_verified 
-                                        ? '<span class="text-green-600 font-semibold">Verified</span>' 
+                                    ${data.employer?.is_verified
+                                        ? '<span class="text-green-600 font-semibold">Verified</span>'
                                         : '<span class="text-red-500 font-semibold">Not Verified</span>'}
                                     </p>
                                 </div>

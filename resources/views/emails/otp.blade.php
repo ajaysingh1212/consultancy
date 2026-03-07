@@ -19,7 +19,7 @@
         <!-- Header -->
         <tr>
             <td style="background:#FAF0E7; padding:30px 25px;">
-                
+
                 <table width="100%" cellpadding="0" cellspacing="0">
                     <tr>
                         <td width="160" valign="middle">
@@ -56,8 +56,8 @@
 
                 <p style="margin:0 0 30px 0; font-size:15px;">
                     <strong style="color:#111827;">
-                        {{-- {{ $email }} --}}
-                        mansy@gmail.com
+                        {{ $email }}
+                        {{-- mansy@gmail.com --}}
                     </strong>
                 </p>
 
@@ -76,8 +76,8 @@
                                letter-spacing:8px;
                                border-radius:8px;
                                display:inline-block;">
-                                {{-- {{ $otp }} --}}
-                                123456
+                                {{ $otp }}
+
                             </a>
                         </td>
                     </tr>
@@ -140,10 +140,10 @@
 
                 <!-- Disclaimer -->
                 <p style="margin:0; font-size:10px; line-height:16px; color:#9ca3af;">
-                    <strong>Disclaimer:</strong> This email and any attachments are confidential 
-                    and intended solely for the individual to whom they are addressed. 
-                    If you have received this email in error, please notify the sender immediately 
-                    and delete it from your system. EEMOT OVERSEAS RECRUITMENT 
+                    <strong>Disclaimer:</strong> This email and any attachments are confidential
+                    and intended solely for the individual to whom they are addressed.
+                    If you have received this email in error, please notify the sender immediately
+                    and delete it from your system. EEMOT OVERSEAS RECRUITMENT
                     is not responsible for any unauthorized use, disclosure, or modification of this email.
                 </p>
 

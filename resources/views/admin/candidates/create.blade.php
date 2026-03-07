@@ -11,11 +11,10 @@
         </h2>
 
         <a href="{{ route('admin.candidates.index') }}"
-           class="bg-white border border-[#ddd6fe]
+           class="bg-white border border-gray-200
                   text-[#7c3aed] px-6 py-3
-                  rounded-2xl shadow-sm
-                  hover:bg-[#ede9fe]
-                  transition flex items-center gap-2">
+                  rounded-xl shadow-sm
+                  hover:bg-gray-50 transition">
             📋 View All
         </a>
     </div>
@@ -24,15 +23,14 @@
     <form method="POST"
           action="{{ route('admin.candidates.store') }}"
           id="candidateForm"
-          class="bg-gradient-to-br from-[#f5f3ff] to-[#faf5ff]
-                 border border-[#e9d5ff]
-                 rounded-3xl shadow-2xl p-10">
+          class="bg-white border border-gray-200
+                 rounded-2xl shadow-lg p-10 space-y-8">
 
         @csrf
 
         <!-- EMAIL SECTION -->
-        <div class="mb-8">
-            <label class="block text-lg font-semibold mb-3">
+        <div class="space-y-3">
+            <label class="block font-semibold text-gray-700">
                 📧 Email Address
             </label>
 
@@ -41,62 +39,123 @@
                        name="email"
                        id="email"
                        required
-                       placeholder="Enter candidate email"
-                       class="w-full px-5 py-4 rounded-2xl border border-[#ddd6fe] focus:ring-2 focus:ring-[#7c3aed]">
+                       class="w-full px-4 py-3 rounded-lg border border-gray-300
+                              focus:ring-2 focus:ring-[#7c3aed] focus:border-[#7c3aed] outline-none">
 
                 <button type="button"
                         onclick="sendOtp(false)"
                         id="verifyBtn"
                         class="bg-[#7c3aed] hover:bg-[#6d28d9]
-                               text-white px-6 py-4 rounded-2xl shadow-md transition">
+                               text-white px-6 py-3 rounded-lg shadow-md transition">
                     Verify
                 </button>
             </div>
 
             <p id="emailVerifiedMsg"
-               class="text-green-600 font-medium mt-3 hidden flex items-center gap-2">
-                <span class="text-xl">✔</span> Email Successfully Verified
+               class="text-green-600 font-medium hidden">
+                ✔ Email Successfully Verified
             </p>
         </div>
 
-        <hr class="mb-8 border-[#e9d5ff]">
+        <hr>
 
-        <!-- REST FORM -->
+        <!-- FORM FIELDS -->
         <div id="remainingFields"
-             class="grid grid-cols-1 md:grid-cols-2 gap-6 opacity-50 pointer-events-none transition duration-300">
+             class="grid grid-cols-1 md:grid-cols-2 gap-6 opacity-50 pointer-events-none transition">
 
-            <input name="full_name" placeholder="Full Name" class="p-3 rounded-xl border border-[#ddd6fe]">
-            <input name="mobile" placeholder="Mobile" class="p-3 rounded-xl border border-[#ddd6fe]">
-            <input name="passport_number" placeholder="Passport Number" class="p-3 rounded-xl border border-[#ddd6fe]">
-            <input type="date" name="dob" class="p-3 rounded-xl border border-[#ddd6fe]">
-            <input name="nationality" placeholder="Nationality" class="p-3 rounded-xl border border-[#ddd6fe]">
-            <input type="date" name="passport_expiry" class="p-3 rounded-xl border border-[#ddd6fe]">
+            <!-- Full Name -->
+            <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">
+                    Full Name
+                </label>
+                <input name="full_name"
+                       class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#7c3aed] outline-none">
+            </div>
 
-            <select name="gender" class="p-3 rounded-xl border border-[#ddd6fe]">
-                <option value="">Select Gender</option>
-                <option>Male</option>
-                <option>Female</option>
-            </select>
+            <!-- Mobile -->
+            <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">
+                    Mobile
+                </label>
+                <input name="mobile"
+                       class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#7c3aed] outline-none">
+            </div>
 
-            <select name="marital_status" class="p-3 rounded-xl border border-[#ddd6fe]">
-                <option value="">Select Status</option>
-                <option>Single</option>
-                <option>Married</option>
-            </select>
+            <!-- Passport -->
+            <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">
+                    Passport Number
+                </label>
+                <input name="passport_number"
+                       class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#7c3aed] outline-none">
+            </div>
+
+            <!-- DOB -->
+            <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">
+                    Date of Birth
+                </label>
+                <input type="date"
+                       name="dob"
+                       class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#7c3aed] outline-none">
+            </div>
+
+            <!-- Nationality -->
+            <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">
+                    Nationality
+                </label>
+                <input name="nationality"
+                       class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#7c3aed] outline-none">
+            </div>
+
+            <!-- Passport Expiry -->
+            <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">
+                    Passport Expiry
+                </label>
+                <input type="date"
+                       name="passport_expiry"
+                       class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#7c3aed] outline-none">
+            </div>
+
+            <!-- Gender -->
+            <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">
+                    Gender
+                </label>
+                <select name="gender"
+                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#7c3aed] outline-none">
+                    <option value="">Select Gender</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                </select>
+            </div>
+
+            <!-- Marital Status -->
+            <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">
+                    Marital Status
+                </label>
+                <select name="marital_status"
+                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#7c3aed] outline-none">
+                    <option value="">Select Status</option>
+                    <option>Single</option>
+                    <option>Married</option>
+                </select>
+            </div>
 
         </div>
 
         <button type="submit"
                 id="submitBtn"
                 disabled
-                class="mt-8 bg-gray-400 text-white px-8 py-3 rounded-xl transition">
+                class="bg-gray-400 text-white px-8 py-3 rounded-lg transition">
             💾 Save Candidate
         </button>
 
     </form>
 </div>
-
-
 <!-- OTP MODAL -->
 <div id="otpModal"
      class="fixed inset-0 bg-black bg-opacity-60 hidden z-50 flex items-center justify-center">

@@ -87,8 +87,7 @@ class VisaApplicationController extends Controller
     public function edit(VisaApplication $visaApplication)
     {
         $candidates = Candidate::orderBy('full_name')->get();
-        $jobs       = Job::orderBy('title')->get();
-
+        $jobs = Job::orderBy('job_title')->get();
         return view('admin.visa-applications.edit', compact('visaApplication','candidates','jobs'));
     }
 
