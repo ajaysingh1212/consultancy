@@ -24,6 +24,7 @@
                 <tr>
                     <th>Name</th>
                     <th>Status</th>
+                    <x-created-by-header />
                     <th class="text-center">Action</th>
                 </tr>
             </thead>
@@ -47,7 +48,7 @@
                             </span>
                         @endif
                     </td>
-
+                    <x-created-by-column :model="$category" />
                     <td class="text-center space-x-2">
 
                         <a href="{{ route('admin.expense.categories.show',$category) }}"

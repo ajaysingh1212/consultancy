@@ -32,6 +32,7 @@
                     <th>Categories</th>
                     <th>Amount</th>
                     <th>Status</th>
+                    <x-created-by-header />
                     <th width="160">Action</th>
                 </tr>
             </thead>
@@ -66,7 +67,7 @@
                             </span>
                         @endif
                     </td>
-
+                    <x-created-by-column :model="$expense" />
                     <td class="space-x-2">
 
                         <!-- VIEW -->

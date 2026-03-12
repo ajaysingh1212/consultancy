@@ -21,6 +21,7 @@
 <th>Date</th>
 <th>Mode</th>
 <th>Calendar</th>
+<x-created-by-header />
 <th>Action</th>
 </tr>
 </thead>
@@ -61,7 +62,7 @@ class="text-indigo-600">
 </a>
 @endif
 </td>
-
+<x-created-by-column :model="$interview" />
 <td class="space-x-2">
 
 <a href="{{ route('admin.interviews.show',$interview) }}"

@@ -30,9 +30,9 @@ class CandidateController extends Controller
 
 public function store(Request $request)
 {
-    
-    $registration_number = 'ET' . rand(1000,9999) . strtoupper(Str::random(4));
 
+    $registration_number = 'ET' . rand(1000,9999) . strtoupper(Str::random(4));
+    
     $candidate = Candidate::create($request->validate([
         'full_name'       => 'required|string|max:255',
         'mobile'          => 'required|unique:candidates,mobile',
