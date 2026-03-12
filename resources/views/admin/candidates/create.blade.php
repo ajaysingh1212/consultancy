@@ -217,41 +217,162 @@ Verify OTP
 
 <script>
 
+/* ---------------------------
+   COUNTRY DATA (FALLBACK)
+--------------------------- */
+
+const fallbackCountries = [
+{name:"India",code:"+91"},
+{name:"United States",code:"+1"},
+{name:"United Kingdom",code:"+44"},
+{name:"Canada",code:"+1"},
+{name:"Australia",code:"+61"},
+{name:"Germany",code:"+49"},
+{name:"France",code:"+33"},
+{name:"Italy",code:"+39"},
+{name:"Spain",code:"+34"},
+{name:"Netherlands",code:"+31"},
+{name:"Belgium",code:"+32"},
+{name:"Switzerland",code:"+41"},
+{name:"Austria",code:"+43"},
+{name:"Denmark",code:"+45"},
+{name:"Norway",code:"+47"},
+{name:"Sweden",code:"+46"},
+{name:"Finland",code:"+358"},
+{name:"Russia",code:"+7"},
+{name:"Ukraine",code:"+380"},
+{name:"Poland",code:"+48"},
+{name:"Portugal",code:"+351"},
+{name:"Greece",code:"+30"},
+{name:"Turkey",code:"+90"},
+{name:"UAE",code:"+971"},
+{name:"Saudi Arabia",code:"+966"},
+{name:"Qatar",code:"+974"},
+{name:"Kuwait",code:"+965"},
+{name:"Oman",code:"+968"},
+{name:"Bahrain",code:"+973"},
+{name:"Japan",code:"+81"},
+{name:"China",code:"+86"},
+{name:"South Korea",code:"+82"},
+{name:"Thailand",code:"+66"},
+{name:"Vietnam",code:"+84"},
+{name:"Malaysia",code:"+60"},
+{name:"Singapore",code:"+65"},
+{name:"Indonesia",code:"+62"},
+{name:"Philippines",code:"+63"},
+{name:"Pakistan",code:"+92"},
+{name:"Bangladesh",code:"+880"},
+{name:"Nepal",code:"+977"},
+{name:"Sri Lanka",code:"+94"},
+{name:"South Africa",code:"+27"},
+{name:"Nigeria",code:"+234"},
+{name:"Kenya",code:"+254"},
+{name:"Egypt",code:"+20"},
+{name:"Morocco",code:"+212"},
+{name:"Brazil",code:"+55"},
+{name:"Argentina",code:"+54"},
+{name:"Mexico",code:"+52"}
+];
+
+
+/* ---------------------------
+   LOAD COUNTRIES
+--------------------------- */
+
 async function loadCountries(){
 
-let res=await fetch("https://restcountries.com/v3.1/all");
+let countrySelect = document.getElementById("countrySelect");
+let nationalitySelect = document.getElementById("nationalitySelect");
 
-let countries=await res.json();
+countrySelect.innerHTML="";
+nationalitySelect.innerHTML="";
 
-countries.sort((a,b)=>a.name.common.localeCompare(b.name.common));
+let countriesData=[];
 
-let countrySelect=document.getElementById("countrySelect");
-let nationalitySelect=document.getElementById("nationalitySelect");
+try{
 
-countries.forEach(c=>{
+let res = await fetch("https://restcountries.com/v3.1/all");
+
+if(!res.ok) throw new Error("API failed");
+
+let apiCountries = await res.json();
+
+if(Array.isArray(apiCountries)){
+
+countriesData = apiCountries.map(c=>{
 
 let dial="";
 
 if(c.idd && c.idd.root){
 
-dial=c.idd.root+(c.idd.suffixes ? c.idd.suffixes[0] : "");
+dial = c.idd.root + (c.idd.suffixes ? c.idd.suffixes[0] : "");
 
 }
 
+return {
+name:c.name.common,
+code:dial
+};
+
+});
+
+}else{
+
+throw new Error("Invalid API data");
+
+}
+
+}catch(e){
+
+console.warn("Using fallback countries list");
+
+countriesData = fallbackCountries;
+
+}
+
+
+/* SORT COUNTRIES */
+
+countriesData.sort((a,b)=>a.name.localeCompare(b.name));
+
+
+/* APPEND OPTIONS */
+
+countriesData.forEach(c=>{
+
 let opt=document.createElement("option");
-opt.value=dial;
-opt.text=c.name.common+" ("+dial+")";
+opt.value=c.code;
+opt.text=c.name+(c.code?" ("+c.code+")":"");
 countrySelect.appendChild(opt);
 
 let opt2=document.createElement("option");
-opt2.value=c.name.common;
-opt2.text=c.name.common;
+opt2.value=c.name;
+opt2.text=c.name;
 nationalitySelect.appendChild(opt2);
 
 });
 
-new TomSelect("#countrySelect",{searchField:"text"});
-new TomSelect("#nationalitySelect",{searchField:"text"});
+
+/* INIT TOMSELECT */
+
+if(!countrySelect.tomselect){
+
+new TomSelect("#countrySelect",{
+searchField:"text"
+});
+
+}
+
+if(!nationalitySelect.tomselect){
+
+new TomSelect("#nationalitySelect",{
+searchField:"text"
+});
+
+}
+
+
+/* AUTO COUNTRY CODE */
 
 countrySelect.addEventListener("change",function(){
 
@@ -261,12 +382,16 @@ document.getElementById("countryCode").value=this.value;
 
 }
 
-loadCountries();
 
-</script>
+/* LOAD AFTER PAGE READY */
+
+document.addEventListener("DOMContentLoaded",loadCountries);
 
 
-<script>
+
+/* ---------------------------
+   OTP INPUT FUNCTIONS
+--------------------------- */
 
 function moveNext(el){
 
@@ -302,20 +427,33 @@ return otp;
 
 }
 
+
+/* ---------------------------
+   SEND OTP
+--------------------------- */
+
 async function sendOtp(){
 
 let email=document.getElementById('email').value;
+
+if(!email){
+
+alert("Please enter email");
+
+return;
+
+}
+
+try{
 
 let response=await fetch("{{ route('admin.send.otp') }}",{
 
 method:"POST",
 
 headers:{
-
 'X-CSRF-TOKEN':'{{ csrf_token() }}',
-
-'Content-Type':'application/json'
-
+'Content-Type':'application/json',
+'Accept':'application/json'
 },
 
 body:JSON.stringify({email:email})
@@ -328,28 +466,53 @@ if(data.success){
 
 document.getElementById('otpModal').classList.remove('hidden');
 
+setTimeout(()=>{
+document.querySelector('.otp-input').focus();
+},200);
+
 }else{
 
-alert(data.message);
+alert(data.message || "OTP sending failed");
+
+}
+
+}catch(e){
+
+console.error("OTP error",e);
+
+alert("Server error while sending OTP");
 
 }
 
 }
+
+
+/* ---------------------------
+   VERIFY OTP
+--------------------------- */
 
 async function verifyOtp(){
 
 let otp=getOtp();
+
+if(otp.length!==6){
+
+alert("Enter complete OTP");
+
+return;
+
+}
+
+try{
 
 let res=await fetch("{{ route('admin.verify.otp') }}",{
 
 method:"POST",
 
 headers:{
-
 'X-CSRF-TOKEN':'{{ csrf_token() }}',
-
-'Content-Type':'application/json'
-
+'Content-Type':'application/json',
+'Accept':'application/json'
 },
 
 body:JSON.stringify({otp:otp})
@@ -365,13 +528,13 @@ document.getElementById('otpModal').classList.add('hidden');
 document.getElementById('remainingFields')
 .classList.remove('pointer-events-none','opacity-50');
 
-document.getElementById('submitBtn').disabled=false;
+let submitBtn=document.getElementById('submitBtn');
 
-document.getElementById('submitBtn')
-.classList.remove('bg-gray-400');
+submitBtn.disabled=false;
 
-document.getElementById('submitBtn')
-.classList.add('bg-[#7c3aed]');
+submitBtn.classList.remove('bg-gray-400');
+
+submitBtn.classList.add('bg-[#7c3aed]');
 
 document.getElementById('emailVerifiedMsg').classList.remove('hidden');
 
@@ -381,7 +544,15 @@ document.getElementById('email').readOnly=true;
 
 }else{
 
-alert("Invalid OTP");
+alert(data.message || "Invalid OTP");
+
+}
+
+}catch(e){
+
+console.error("Verify OTP error",e);
+
+alert("Server error while verifying OTP");
 
 }
 
