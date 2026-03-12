@@ -1,19 +1,37 @@
 @extends('admin.layouts.app')
-
 @section('content')
+
+<style>
+.action-btn{
+width:38px;
+height:38px;
+border-radius:50%;
+display:inline-flex;
+align-items:center;
+justify-content:center;
+transition:0.3s;
+}
+.action-btn:hover{
+transform:scale(1.08);
+}
+</style>
 
 <div class="max-w-7xl mx-auto mt-8">
 
-<h2 class="text-2xl font-bold text-[#8b5cf6] mb-6">
+{{-- HEADER --}}
+<div class="flex justify-between mb-6">
+<h2 class="text-2xl font-bold text-purple-600">
 🧠 Candidate Skills
 </h2>
+</div>
 
-<div class="card">
+{{-- CARD --}}
+<div class="card p-6">
 
 <table class="datatable w-full">
 
 <thead>
-<tr class="text-[#8b5cf6] border-b">
+<tr>
 <th>#</th>
 <th>Candidate</th>
 <th>Total Skills</th>
@@ -25,17 +43,35 @@
 
 @foreach($candidates as $candidate)
 
-<tr class="border-b hover:bg-[#ede9fe]">
+<tr class="hover:bg-purple-50">
+
 <td>#{{ $candidate->id }}</td>
-<td>{{ $candidate->full_name }}</td>
-<td>{{ $candidate->skills->count() }}</td>
 
 <td>
+<a href="#"
+onclick="showProfile({{ $candidate }})"
+class="font-semibold text-purple-600">
+{{ $candidate->full_name }}
+</a>
+</td>
+
+<td>
+<span class="px-3 py-1 rounded-full text-sm
+{{ $candidate->skills->count() > 0 
+? 'bg-green-100 text-green-600' 
+: 'bg-red-100 text-red-600' }}">
+{{ $candidate->skills->count() }} Skills
+</span>
+</td>
+
+<td class="space-x-1">
+
 <a href="{{ route('admin.candidate-skills.edit',$candidate) }}"
 class="action-btn bg-purple-100 text-purple-600"
-data-text="Manage">
+title="Manage Skills">
 ⚙
 </a>
+
 </td>
 
 </tr>
@@ -47,5 +83,16 @@ data-text="Manage">
 
 </div>
 </div>
+
+<script>
+function showProfile(candidate){
+alert(
+"Name: "+candidate.full_name+
+"\nEmail: "+candidate.email+
+"\nMobile: "+candidate.mobile+
+"\nTotal Skills: "+(candidate.skills?.length ?? 0)
+);
+}
+</script>
 
 @endsection
