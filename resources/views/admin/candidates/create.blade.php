@@ -181,12 +181,13 @@ class="bg-gray-400 text-white px-8 py-3 rounded-lg transition">
 <div id="otpModal"
 class="fixed inset-0 bg-black bg-opacity-60 hidden z-50 flex items-center justify-center">
 
-<div class="bg-white rounded-3xl shadow-2xl text-center p-8 relative"
-style="width:500px;">
+    <!-- Modal Box -->
+    <div class="bg-white rounded-3xl shadow-2xl text-center p-8 relative"
+         style="width:1600px;height:600px;">
 
-<h3 class="text-2xl font-bold text-[#7c3aed] mb-4">
-🔐 Email Verification
-</h3>
+        <h3 class="text-2xl font-bold text-[#7c3aed] mb-2" style="font-size: 50px; padding:20px;">
+            🔐 Email Verification
+        </h3>
 
 <div id="modalMessage"
 class="text-sm font-medium mb-3 hidden"></div>
@@ -195,19 +196,25 @@ class="text-sm font-medium mb-3 hidden"></div>
 05:00
 </div>
 
-<div class="flex justify-center space-x-3 mb-6">
-@for($i=0;$i<6;$i++)
-<input maxlength="1"
-class="otp-input w-12 h-14 text-center text-xl border-2 border-[#ddd6fe] rounded-lg"
-oninput="moveNext(this)"
-onkeydown="moveBack(event,this)">
-@endfor
-</div>
+        <!-- OTP Inputs -->
+        <div class="flex justify-center space-x-3 mb-6">
+            @for($i=0;$i<6;$i++)
+                <input maxlength="1"
+                       class="otp-input w-12 h-20 text-center text-xl border-2 border-[#ddd6fe] rounded-lg focus:border-[#7c3aed] focus:outline-none"
+                       oninput="moveNext(this)"
+                       onkeydown="moveBack(event,this)">
+            @endfor
+        </div>
 
-<button onclick="verifyOtp()"
-class="bg-[#7c3aed] hover:bg-[#6d28d9] text-white w-full py-3 rounded-xl">
-Verify OTP
-</button>
+        <!-- Loader -->
+        <div id="loader" class="hidden mb-4">
+            <div class="loader mx-auto"></div>
+        </div>
+
+        <button onclick="verifyOtp()"
+                class="bg-[#7c3aed] hover:bg-[#6d28d9] text-white w-full py-2 rounded-xl transition" style="height: 80px;">
+            Verify OTP
+        </button>
 
 <button onclick="sendOtp(true)"
 id="resendBtn"
