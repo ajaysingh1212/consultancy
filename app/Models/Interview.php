@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
-class Interview extends Model
+class Interview extends BaseModel
 {
     protected $fillable = [
         'job_application_id',

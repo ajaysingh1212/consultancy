@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class CandidateWallet extends Model
+class CandidateWallet extends BaseModel
 {
     protected $fillable = ['candidate_id', 'balance','wallet_uid'];
 

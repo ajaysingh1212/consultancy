@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use App\Models\CandidateWallet;
 
-class Candidate extends Model
+class Candidate extends BaseModel
 {
     use Notifiable;
 
@@ -29,6 +30,7 @@ class Candidate extends Model
         'bank_name',
         'account_no',
         'ifsc'
+
     ];
 
     /*

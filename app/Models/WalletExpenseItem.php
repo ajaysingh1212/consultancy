@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class WalletExpenseItem extends Model
+class WalletExpenseItem extends BaseModel
 {
     protected $fillable = [
         'wallet_expense_id',

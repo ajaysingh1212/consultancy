@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class JobShortlist extends Model
+class JobShortlist extends BaseModel
 {
     protected $fillable = [
         'job_id',
