@@ -35,6 +35,7 @@ transform:scale(1.08);
 <th>#</th>
 <th>Candidate</th>
 <th>Total Skills</th>
+<x-created-by-header />
 <th>Actions</th>
 </tr>
 </thead>
@@ -57,13 +58,13 @@ class="font-semibold text-purple-600">
 
 <td>
 <span class="px-3 py-1 rounded-full text-sm
-{{ $candidate->skills->count() > 0 
-? 'bg-green-100 text-green-600' 
+{{ $candidate->skills->count() > 0
+? 'bg-green-100 text-green-600'
 : 'bg-red-100 text-red-600' }}">
 {{ $candidate->skills->count() }} Skills
 </span>
 </td>
-
+<x-created-by-column :model="$candidate" />
 <td class="space-x-1">
 
 <a href="{{ route('admin.candidate-skills.edit',$candidate) }}"

@@ -79,6 +79,7 @@ Add Biometric
 <th class="py-3">ID</th>
 <th>Candidate</th>
 <th>Photo Status</th>
+<x-created-by-header />
 <th class="text-center">Actions</th>
 
 </tr>
@@ -131,7 +132,7 @@ Pending
 @endif
 
 </td>
-
+<x-created-by-column :model="$bio" />
 <td class="text-center space-x-4">
 
 {{-- View --}}

@@ -29,6 +29,7 @@
                     <th>Company</th>
                     <th>Email</th>
                     <th>Status</th>
+                    <x-created-by-header />
                     <th class="text-center">Actions</th>
                 </tr>
             </thead>
@@ -59,7 +60,7 @@
                         </span>
                         @endif
                     </td>
-
+                    <x-created-by-column :model="$employer" />
                     <td class="text-center space-x-2">
 
                         <a href="{{ route('admin.employers.show',$employer) }}"

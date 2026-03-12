@@ -44,7 +44,7 @@ class="bg-purple-600 text-white px-5 py-2 rounded-xl">
 <th>Job</th>
 <th>Status</th>
 <th>Match</th>
-
+<x-created-by-header />
 <th>Actions</th>
 </tr>
 </thead>
@@ -103,7 +103,7 @@ background:
 </div>
 </div>
 </td>
-
+<x-created-by-column :model="$app" />
 <td class="space-x-1">
 
 {{-- VIEW --}}
