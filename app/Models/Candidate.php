@@ -29,7 +29,8 @@ class Candidate extends BaseModel
         'pan_no',
         'bank_name',
         'account_no',
-        'ifsc'
+        'ifsc',
+        'registration_number'
 
     ];
 
