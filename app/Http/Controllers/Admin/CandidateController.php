@@ -30,6 +30,7 @@ class CandidateController extends Controller
 
 public function store(Request $request)
 {
+    dd($request->all());
     $registration_number = 'ET' . rand(1000,9999) . strtoupper(Str::random(4));
 
     $candidate = Candidate::create($request->validate([

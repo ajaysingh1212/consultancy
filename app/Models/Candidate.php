@@ -101,6 +101,8 @@ class Candidate extends BaseModel
 
     protected static function booted()
     {
+        parent::booted(); // ⭐ IMPORTANT
+
         static::created(function ($candidate) {
 
             $candidate->wallet()->create([
