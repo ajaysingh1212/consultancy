@@ -8,6 +8,8 @@ use App\Models\Candidate;
 use App\Models\CandidateBiometric;
 use App\Models\CandidateDocument;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 
@@ -25,24 +27,29 @@ class CandidateController extends Controller
         return view('admin.candidates.create');
     }
 
-    public function store(Request $request)
-    {
 
-        $candidate = Candidate::create($request->validate([
-            'full_name'       => 'required|string|max:255',
-            'mobile'          => 'required|unique:candidates,mobile',
-            'email'           => 'required|email|unique:candidates,email',
-            'passport_number' => 'required|unique:candidates,passport_number',
-            'dob'             => 'required|date',
-            'gender'          => 'required',
-            'marital_status'  => 'required',
-            'nationality'     => 'required',
-            'passport_expiry' => 'required|date',
-        ]));
+public function store(Request $request)
+{
+    dd($request->all());
+    $registration_number = 'ET' . rand(1000,9999) . strtoupper(Str::random(4));
 
-        return redirect()->route('admin.candidates.index')
-            ->with('success','Candidate created successfully');
-    }
+    $candidate = Candidate::create($request->validate([
+        'full_name'       => 'required|string|max:255',
+        'mobile'          => 'required|unique:candidates,mobile',
+        'email'           => 'required|email|unique:candidates,email',
+        'passport_number' => 'required|unique:candidates,passport_number',
+        'dob'             => 'required|date',
+        'gender'          => 'required',
+        'marital_status'  => 'required',
+        'nationality'     => 'required',
+        'passport_expiry' => 'required|date',
+    ]) + [
+        'registration_number' => $registration_number
+    ]);
+
+    return redirect()->route('admin.candidates.index')
+        ->with('success','Candidate created successfully');
+}
 
     public function show(Candidate $candidate)
     {

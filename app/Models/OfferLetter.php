@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class OfferLetter extends Model
+class OfferLetter extends BaseModel
 {
     protected $fillable = [
         'job_application_id',

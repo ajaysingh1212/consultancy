@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class VisaApplication extends Model
+class VisaApplication extends BaseModel
 {
     use HasFactory;
 

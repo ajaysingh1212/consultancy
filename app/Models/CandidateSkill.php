@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class CandidateSkill extends Model
+class CandidateSkill extends BaseModel
 {
     protected $fillable = [
         'candidate_id',

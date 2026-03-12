@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class DocumentVerificationHistory extends Model
+class DocumentVerificationHistory extends BaseModel
 {
     protected $fillable = [
         'document_id',

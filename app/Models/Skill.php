@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class Skill extends Model
+class Skill extends BaseModel
 {
     protected $fillable = [
         'name',

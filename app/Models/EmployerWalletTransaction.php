@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class EmployerWalletTransaction extends Model
+class EmployerWalletTransaction extends BaseModel
 {
     protected $fillable = [
         'employer_id',
