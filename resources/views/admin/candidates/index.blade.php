@@ -55,6 +55,7 @@
                     <th>Name</th>
                     <th>Passport</th>
                     <th>KYC Status</th>
+                    <x-created-by-header />
                     <th class="text-center">Actions</th>
                 </tr>
             </thead>
@@ -103,7 +104,7 @@
                             </span>
                         @endif
                     </td>
-
+                    <x-created-by-column :model="$candidate" />
                     {{-- ACTIONS --}}
              <td class="text-center space-x-2">
 
