@@ -202,6 +202,14 @@ onkeydown="moveBack(event,this)">
 
 </div>
 
+<!-- TIMER -->
+<p id="otpTimer" class="text-gray-600 mb-3 font-medium"></p>
+
+<!-- RESEND -->
+<p id="resendOtp" class="hidden text-[#7c3aed] cursor-pointer font-semibold mb-3" onclick="resendOtp()">
+Resend OTP
+</p>
+
 <button onclick="verifyOtp()"
 class="bg-[#7c3aed] hover:bg-[#6d28d9] text-white w-full py-3 rounded-xl">
 Verify OTP
@@ -209,13 +217,70 @@ Verify OTP
 
 </div>
 </div>
-
-
 <!-- TOM SELECT -->
 <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
 
 <script>
+
+/* ---------------------------
+   OTP TIMER VARIABLES
+--------------------------- */
+
+let otpTimerInterval;
+let otpTime = 300;
+
+function startOtpTimer(){
+
+clearInterval(otpTimerInterval);
+
+otpTime = 300;
+
+let timerEl = document.getElementById("otpTimer");
+let resendEl = document.getElementById("resendOtp");
+
+if(timerEl) timerEl.innerText = "OTP expires in 5:00";
+if(resendEl) resendEl.classList.add("hidden");
+
+otpTimerInterval = setInterval(function(){
+
+let minutes = Math.floor(otpTime / 60);
+let seconds = otpTime % 60;
+
+if(seconds < 10) seconds = "0" + seconds;
+
+if(timerEl){
+timerEl.innerText = "OTP expires in " + minutes + ":" + seconds;
+}
+
+otpTime--;
+
+if(otpTime < 0){
+
+clearInterval(otpTimerInterval);
+
+if(timerEl){
+timerEl.innerText = "OTP expired";
+}
+
+if(resendEl){
+resendEl.classList.remove("hidden");
+}
+
+}
+
+},1000);
+
+}
+
+function resendOtp(){
+
+sendOtp();
+
+startOtpTimer();
+
+}
+
 
 /* ---------------------------
    COUNTRY DATA (FALLBACK)
@@ -466,6 +531,8 @@ if(data.success){
 
 document.getElementById('otpModal').classList.remove('hidden');
 
+startOtpTimer();
+
 setTimeout(()=>{
 document.querySelector('.otp-input').focus();
 },200);
@@ -522,6 +589,8 @@ body:JSON.stringify({otp:otp})
 let data=await res.json();
 
 if(data.success){
+
+clearInterval(otpTimerInterval);
 
 document.getElementById('otpModal').classList.add('hidden');
 
